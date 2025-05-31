@@ -9,7 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'player');
-              },
+              onPressed: () => Navigator.pushNamed(context, 'player'),
               child: Text('Open Player'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, 'songs'),
+              child: Text('Open on audio query'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, 'permissions'),
+              child: Text('Permissions'),
             ),
           ],
         ),

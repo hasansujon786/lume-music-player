@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:on_audio_query_forked/on_audio_query.dart';
 
 class PlayerScreen extends StatefulWidget {
-  const PlayerScreen({super.key, required this.title});
+  const PlayerScreen({super.key, required this.title, this.audio});
   final String title;
+  final SongModel? audio;
 
   @override
   State<PlayerScreen> createState() => _PlayerScreenState();
@@ -22,11 +24,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   void handleSource() async {
-    var url = 'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3';
-    await player.setUrl(url);
-    print('handleSource');
+    if (widget.audio?.data != null) {
+      print('audio data ==========================================');
+
+      await player.setFilePath(widget.audio!.data);
+    }
+    // var url = 'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3';
+    // await player.setUrl(url);
     // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-    // print("xxxxxxxxxxxxx");
   }
 
   String formatDuration(Duration d) {
@@ -77,42 +82,86 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: Text(widget.title)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Slider(
-              padding: EdgeInsetsGeometry.symmetric(vertical: 4),
-              min: 0.0,
-              max: durationTime.inSeconds.toDouble(),
-              value: currentTime.inSeconds.toDouble(),
-              onChanged: (value) {
-                setState(() => currentTime = Duration(seconds: value.toInt()));
-              },
-              onChangeStart: (value) {
-                usingSlider = true;
-              },
-              onChangeEnd: (value) {
-                player.seek(Duration(seconds: value.toInt()));
-                usingSlider = false;
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text(formatDuration(currentTime)), SizedBox(width: 12), Text(formatDuration(durationTime))],
-            ),
-            // TextButton(onPressed: handleSource, child: Text("Load url")),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(onPressed: () => player.seek(currentTime - Duration(seconds: 5)), child: Text('-5s')),
-                TextButton(onPressed: handlePlayPause, child: Text(player.playing ? 'Pause' : 'play')),
-                TextButton(onPressed: () => player.seek(currentTime + Duration(seconds: 5)), child: Text('+5s')),
-              ],
-            ),
-            TextButton(onPressed: () => player.seek(durationTime - Duration(seconds: 5)), child: Text('5s before')),
-          ],
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(height: 500),
+              Slider(
+                padding: EdgeInsetsGeometry.symmetric(vertical: 4),
+                min: 0.0,
+                max: durationTime.inSeconds.toDouble(),
+                value: currentTime.inSeconds.toDouble(),
+                onChanged: (value) {
+                  setState(() => currentTime = Duration(seconds: value.toInt()));
+                },
+                onChangeStart: (value) {
+                  usingSlider = true;
+                },
+                onChangeEnd: (value) {
+                  player.seek(Duration(seconds: value.toInt()));
+                  usingSlider = false;
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(formatDuration(currentTime)),
+                  SizedBox(width: 12),
+                  Text(formatDuration(durationTime)),
+                ],
+              ),
+              // TextButton(onPressed: handleSource, child: Text("Load url")),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    iconSize: 32,
+                    isSelected: false,
+                    icon: Icon(Icons.loop_rounded),
+                    onPressed: () => player.seek(currentTime - Duration(seconds: 5)),
+                  ),
+                  IconButton(
+                    iconSize: 32,
+                    isSelected: false,
+                    icon: Icon(Icons.skip_previous_rounded),
+                    onPressed: () => player.seek(currentTime - Duration(seconds: 5)),
+                  ),
+                  IconButton.filled(
+                    iconSize: 32,
+                    isSelected: player.playing,
+                    selectedIcon: Icon(Icons.pause_rounded),
+                    icon: Icon(Icons.play_arrow_rounded),
+                    onPressed: handlePlayPause,
+                    padding: EdgeInsetsGeometry.all(12),
+                  ),
+                  IconButton(
+                    iconSize: 32,
+                    isSelected: false,
+                    icon: Icon(Icons.skip_next_rounded),
+                    onPressed: () => player.seek(currentTime + Duration(seconds: 5)),
+                  ),
+                  IconButton(
+                    iconSize: 32,
+                    isSelected: false,
+                    icon: Icon(Icons.playlist_play_rounded),
+                    onPressed: () => player.seek(currentTime - Duration(seconds: 5)),
+                  ),
+                ],
+              ),
+              SizedBox(height: 100),
+              TextButton(
+                onPressed: () => player.seek(durationTime - Duration(seconds: 5)),
+                child: Text('5s before'),
+              ),
+            ],
+          ),
         ),
       ),
     );
