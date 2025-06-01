@@ -6,9 +6,13 @@ import 'package:on_audio_query_forked/on_audio_query.dart';
 part 'audio_player_state.dart';
 
 class AudioPlayerCubit extends Cubit<AudioPlayerState> {
-  final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer _player = AudioPlayerManager().player;
 
   AudioPlayerCubit() : super(AudioPlayerState.initial()) {
+    _player.loopModeStream.listen((mode) {
+      emit(state.copyWith(loopMode: mode));
+    });
+
     _player.positionStream.listen((pos) {
       emit(state.copyWith(position: pos));
     });
@@ -18,19 +22,39 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     });
 
     _player.playerStateStream.listen((playerState) {
-      // isPlaying: playerState.playing && playerState.processingState == ProcessingState.ready,
-      emit(state.copyWith(isPlaying: playerState.playing));
+      emit(state.copyWith(isPlaying: playerState.playing, playerState: playerState));
 
       if (playerState.processingState == ProcessingState.completed) {
         _player.stop();
-        _player.seek(Duration.zero);
+        _player.seek(Duration.zero, index: _player.effectiveIndices.first);
       }
     });
   }
+  void _setInitialPlaylist() async {
+    const prefix = 'https://www.soundhelix.com/examples/mp3';
+    final song1 = Uri.parse('$prefix/SoundHelix-Song-1.mp3');
+    final song2 = Uri.parse('$prefix/SoundHelix-Song-2.mp3');
+    final song3 = Uri.parse('$prefix/SoundHelix-Song-3.mp3');
+    _player.setAudioSources([
+      AudioSource.uri(song1, tag: 'Song 1'),
+      AudioSource.uri(song2, tag: 'Song 2'),
+      AudioSource.uri(song3, tag: 'Song 3'),
+    ]);
+  }
 
   Future<void> setUrlAudio(String url) async {
-    await _player.setUrl(url);
+    _player.stop();
+    _setInitialPlaylist();
+    emit(state.copyWith(removeAudio: true));
     _player.play();
+  }
+
+  Future<void> next() async {
+    await _player.seekToNext();
+  }
+
+  Future<void> prev() async {
+    await _player.seekToPrevious();
   }
 
   Future<void> setAudioFile(SongModel newAudio, {bool shouldPlay = true}) async {
@@ -47,9 +71,8 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   void pause() => _player.pause();
   void play() => _player.play();
   void seek(Duration position) => _player.seek(position);
-  void toggle() {
-    state.isPlaying ? pause() : _player.play();
-  }
+  void toggle() => state.isPlaying ? pause() : _player.play();
+  void toggleRepeatMode() => _player.setLoopMode(nextLoopMode(_player.loopMode));
 
   @override
   Future<void> close() {
@@ -57,13 +80,27 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     return super.close();
   }
 
+  // @override
+  // void onChange(Change<AudioPlayerState> change) {
+  //   // TODO: implement onChange
+  //   super.onChange(change);
+  //   print('xxxxxxxxxxxx audio_player_cubit xxxxxxxxxxxxxxx');
+  //   print(change.nextState.loopMode);
+  //   print('xxxxxxxxxxxx audio_player_cubit xxxxxxxxxxxxxxx');
+  // }
 }
 
-// class AudioManager {
-//   static final AudioManager _instance = AudioManager._internal();
-//   factory AudioManager() => _instance;
+class AudioPlayerManager {
+  // Static instance (singleton)
+  static final AudioPlayerManager _instance = AudioPlayerManager._internal();
+  factory AudioPlayerManager() => _instance;
+  AudioPlayerManager._internal();
 
-//   final AudioPlayer player = AudioPlayer();
+  // Public fields
+  final AudioPlayer player = AudioPlayer();
+}
 
-//   AudioManager._internal();
-// }
+LoopMode nextLoopMode(LoopMode value) {
+  final next = (value.index + 1) % LoopMode.values.length;
+  return LoopMode.values[next];
+}

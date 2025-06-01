@@ -1,72 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nusic/features/player/cubit/audio_player_cubit.dart';
+import 'package:just_audio/just_audio.dart';
 
-String formatDuration(Duration d) {
-  final min = d.inMinutes.remainder(60);
-  final sec = d.inSeconds.remainder(60);
-  return "${min.toString().padLeft(2, "0")}:${sec.toString().padLeft(2, "0")}";
-}
+import '../cubit/audio_player_cubit.dart';
 
-class PlayerMainControlls extends StatefulWidget {
+class PlayerMainControlls extends StatelessWidget {
   const PlayerMainControlls({super.key});
 
-  @override
-  State<PlayerMainControlls> createState() => _PlayerMainControllsState();
-}
-
-class _PlayerMainControllsState extends State<PlayerMainControlls> {
-  var usingSlider = false;
-
-  var sliderValue = Duration.zero;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
       builder: (context, state) {
         return Column(
           children: <Widget>[
-            Slider(
-              padding: EdgeInsetsGeometry.symmetric(vertical: 4),
-              min: 0.0,
-              max: state.duration.inSeconds.toDouble(),
-              value: usingSlider
-                  ? sliderValue.inSeconds.toDouble()
-                  : state.position.inSeconds.toDouble(),
-              onChanged: (value) {
-                setState(() => sliderValue = Duration(seconds: value.toInt()));
-              },
-              onChangeStart: (value) {
-                usingSlider = true;
-              },
-              onChangeEnd: (value) {
-                context.read<AudioPlayerCubit>().seek(Duration(seconds: value.toInt()));
-                usingSlider = false;
-                sliderValue = Duration.zero;
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(formatDuration(state.position)),
-                SizedBox(width: 12),
-                Text(formatDuration(state.duration)),
-              ],
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
                   iconSize: 32,
                   isSelected: false,
-                  icon: Icon(Icons.loop_rounded),
-                  onPressed: () {},
+                  icon: buildLoopIcon(state.loopMode),
+                  onPressed: () => context.read<AudioPlayerCubit>().toggleRepeatMode(),
                 ),
                 IconButton(
                   iconSize: 32,
                   isSelected: false,
                   icon: Icon(Icons.skip_previous_rounded),
-                  onPressed: () =>
-                      context.read<AudioPlayerCubit>().seek(state.position - Duration(seconds: 5)),
+                  onPressed: () => context.read<AudioPlayerCubit>().prev(),
                 ),
                 IconButton.filled(
                   iconSize: 32,
@@ -80,14 +40,15 @@ class _PlayerMainControllsState extends State<PlayerMainControlls> {
                   iconSize: 32,
                   isSelected: false,
                   icon: Icon(Icons.skip_next_rounded),
-                  onPressed: () =>
-                      context.read<AudioPlayerCubit>().seek(state.position + Duration(seconds: 5)),
+                  onPressed: () => context.read<AudioPlayerCubit>().next(),
                 ),
                 IconButton(
                   iconSize: 32,
                   isSelected: false,
                   icon: Icon(Icons.playlist_play_rounded),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<AudioPlayerCubit>().next();
+                  },
                 ),
               ],
             ),
@@ -97,9 +58,24 @@ class _PlayerMainControllsState extends State<PlayerMainControlls> {
                   context.read<AudioPlayerCubit>().seek(state.duration - Duration(seconds: 5)),
               child: Text('5s before'),
             ),
+            TextButton(
+              onPressed: () => context.read<AudioPlayerCubit>().setUrlAudio('asdf'),
+              child: Text('Set demo songs from url'),
+            ),
           ],
         );
       },
     );
+  }
+
+  Widget buildLoopIcon(LoopMode mode) {
+    switch (mode) {
+      case LoopMode.off:
+        return Icon(Icons.report_off_outlined);
+      case LoopMode.one:
+        return Icon(Icons.repeat_one_rounded);
+      default:
+        return Icon(Icons.repeat_rounded);
+    }
   }
 }

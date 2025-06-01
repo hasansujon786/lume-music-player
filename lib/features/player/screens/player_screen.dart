@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:nusic/features/player/widgets/player_slider.dart';
 
 import '../widgets/widgets.dart';
 
-class PlayerScreen extends StatelessWidget {
+class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
 
+  @override
+  State<PlayerScreen> createState() => _PlayerScreenState();
+}
+
+class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,11 +22,7 @@ class PlayerScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            children: [
-              PlayerArtWork(),
-              AudioTitle(),
-              PlayerMainControlls(),
-            ],
+            children: [PlayerArtWork(), AudioTitle(), PlayerSlider(), PlayerMainControlls()],
           ),
         ),
       ),
