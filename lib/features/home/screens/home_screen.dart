@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextButton(
               onPressed: () => Navigator.pushNamed(context, 'songs'),
-              child: Text('Open on audio query'),
+              child: Text('Songs'),
             ),
             TextButton(
               onPressed: () => Navigator.pushNamed(context, 'permissions'),

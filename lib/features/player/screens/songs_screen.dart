@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nusic/features/player/screens/player_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nusic/features/player/cubit/audio_player_cubit.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 class SongsScreen extends StatefulWidget {
@@ -78,17 +79,10 @@ class _SongsScreenState extends State<SongsScreen> {
                     itemCount: item.data!.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        onTap: () {
-                          print('=====================');
-                          print(item.data![index]);
-
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PlayerScreen(title: 'foo', audio: item.data![index]);
-                              },
-                            ),
-                          );
+                        onTap: () async {
+                          final song = item.data![index];
+                          context.read<AudioPlayerCubit>().setAudioFile(song);
+                          Navigator.of(context).pushNamed('player');
                         },
                         title: Text(item.data![index].title),
                         subtitle: Text(item.data![index].artist ?? 'No Artist'),
