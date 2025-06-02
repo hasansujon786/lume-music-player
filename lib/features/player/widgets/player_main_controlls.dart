@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../cubit/audio_player_cubit.dart';
+import '../screens/playlist.dart';
 
 class PlayerMainControlls extends StatelessWidget {
   const PlayerMainControlls({super.key});
@@ -47,7 +48,7 @@ class PlayerMainControlls extends StatelessWidget {
                   isSelected: false,
                   icon: Icon(Icons.playlist_play_rounded),
                   onPressed: () {
-                    context.read<AudioPlayerCubit>().next();
+                    Navigator.pushNamed(context, Playlist.routeName);
                   },
                 ),
               ],

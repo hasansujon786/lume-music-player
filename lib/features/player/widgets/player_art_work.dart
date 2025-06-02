@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nusic/features/player/cubit/audio_player_cubit.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
+
+import '../cubit/audio_player_cubit.dart';
 
 class PlayerArtWork extends StatefulWidget {
   const PlayerArtWork({super.key});

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nusic/features/setting/screens/permissions.dart';
 
+import 'features/home/screens/home_screen.dart';
 import 'features/player/cubit/audio_player_cubit.dart';
 import 'features/player/screens/player_screen.dart';
-import 'features/home/screens/home_screen.dart';
+import 'features/player/screens/playlist.dart';
 import 'features/player/screens/songs_screen.dart';
+import 'features/setting/screens/permissions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,12 +25,16 @@ class MyApp extends StatelessWidget {
         home: const HomeScreen(title: 'LumeMusicPlayer'),
         onGenerateRoute: (settings) {
           switch (settings.name) {
-            case 'player':
+            case PlayerScreen.routeName:
               return MaterialPageRoute(builder: (context) => PlayerScreen());
-            case 'songs':
+            case Playlist.routeName:
+              return MaterialPageRoute(builder: (context) => Playlist());
+            case SongsScreen.routeName:
               return MaterialPageRoute(builder: (context) => SongsScreen());
-            case 'permissions':
+            case PermissionsScreen.routeName:
               return MaterialPageRoute(builder: (context) => PermissionsScreen());
+            case HomeScreen.routeName:
+              return MaterialPageRoute(builder: (context) => HomeScreen(title: 'LumeMusicPlayer'));
             default:
               return MaterialPageRoute(builder: (context) => HomeScreen(title: 'LumeMusicPlayer'));
           }
