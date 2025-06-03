@@ -6,7 +6,6 @@ import '../cubit/audio_player_cubit.dart';
 class Playlist extends StatefulWidget {
   const Playlist({super.key});
 
-  static const routeName = '/playlist';
   @override
   State<Playlist> createState() => _PlaylistState();
 }
@@ -28,7 +27,10 @@ class _PlaylistState extends State<Playlist> {
                 ),
                 title: Text(item.title),
                 trailing: Icon(Icons.menu),
-                onTap: () => context.read<AudioPlayerCubit>().playWithIndex(index),
+                onTap: () {
+                  context.read<AudioPlayerCubit>().selectAudioWithIndex(index);
+                  context.read<AudioPlayerCubit>().play();
+                },
               );
             },
           );

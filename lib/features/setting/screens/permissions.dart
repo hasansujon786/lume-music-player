@@ -6,7 +6,6 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionsScreen extends StatefulWidget {
   const PermissionsScreen({super.key});
 
-  static const routeName = '/permissions';
   @override
   State<PermissionsScreen> createState() => _PermissionsScreenState();
 }

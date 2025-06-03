@@ -6,7 +6,6 @@ import '../widgets/widgets.dart';
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
 
-  static const routeName = '/player';
   @override
   State<PlayerScreen> createState() => _PlayerScreenState();
 }

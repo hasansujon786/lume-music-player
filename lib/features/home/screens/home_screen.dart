@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../player/screens/player_screen.dart';
-import '../../player/screens/songs_screen.dart';
-import '../../setting/screens/permissions.dart';
+import '../../../common/routes/routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
   final String title;
 
-  static const routeName = '/';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -20,22 +17,28 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, Routes.permissions),
+            icon: Icon(Icons.settings_rounded),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pushNamed(context, PlayerScreen.routeName),
+              onPressed: () => Navigator.pushNamed(context, Routes.player),
               child: Text('Open Player'),
             ),
             TextButton(
-              onPressed: () => Navigator.pushNamed(context, SongsScreen.routeName),
+              onPressed: () => Navigator.pushNamed(context, Routes.browseSongs),
               child: Text('Songs'),
             ),
             TextButton(
-              onPressed: () => Navigator.pushNamed(context, PermissionsScreen.routeName),
-              child: Text('Permissions'),
+              onPressed: () => Navigator.pushNamed(context, Routes.browseArtists),
+              child: Text('Artists'),
             ),
           ],
         ),

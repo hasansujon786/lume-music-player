@@ -35,18 +35,20 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     _listenForChangesInSequenceState();
   }
 
-  Future<void> setAudioFromFile(List<SongModel> audioFiles, {bool shouldPlay = true}) async {
-    if (_player.playing) {
-      await _player.stop();
-    }
-
+  Future<void> setAudioFromFile(
+    List<SongModel> audioFiles, {
+    bool shouldPlay = true,
+    int? index,
+  }) async {
     final sources = audioFiles
         .map((song) => AudioSource.file(song.data, tag: AudioTag.fromSongModel(song)))
         .toList();
 
-    _player.setAudioSources(sources);
-    // await _player.setFilePath(newAudio.data);
-    if (shouldPlay) {
+    await _player.setAudioSources(sources);
+    if (index != null) {
+      await selectAudioWithIndex(index);
+    }
+    if (shouldPlay && !_player.playing) {
       await _player.play();
     }
   }
@@ -69,7 +71,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
   }
 
-  Future<void> playWithIndex(int index) async {
+  Future<void> selectAudioWithIndex(int index) async {
     await _player.seek(Duration.zero, index: index);
   }
 
