@@ -2,11 +2,13 @@ part of 'audio_player_cubit.dart';
 
 class AudioPlayerState extends Equatable {
   final bool isPlaying;
-  final Duration position;
-  final Duration duration;
-  final SongModel? audio;
   final PlayerState playerState;
   final LoopMode loopMode;
+  final List<AudioTag> playlist;
+  final AudioTag? currentAudioTag;
+  final int currentIndex;
+  final Duration position;
+  final Duration duration;
 
   const AudioPlayerState({
     required this.isPlaying,
@@ -14,7 +16,9 @@ class AudioPlayerState extends Equatable {
     required this.duration,
     required this.playerState,
     required this.loopMode,
-    this.audio,
+    required this.playlist,
+    required this.currentIndex,
+    this.currentAudioTag,
   });
 
   factory AudioPlayerState.initial() => AudioPlayerState(
@@ -23,6 +27,8 @@ class AudioPlayerState extends Equatable {
     duration: Duration.zero,
     playerState: PlayerState(false, ProcessingState.idle),
     loopMode: LoopMode.off,
+    currentIndex: 0,
+    playlist: [],
   );
 
   AudioPlayerState copyWith({
@@ -31,19 +37,31 @@ class AudioPlayerState extends Equatable {
     Duration? duration,
     PlayerState? playerState,
     LoopMode? loopMode,
-    SongModel? audio,
+    List<AudioTag>? playlist,
+    int? currentIndex,
+    AudioTag? currentAudioTag,
     bool removeAudio = false,
   }) {
     return AudioPlayerState(
+      playlist: playlist ?? this.playlist,
       isPlaying: isPlaying ?? this.isPlaying,
       position: position ?? this.position,
       duration: duration ?? this.duration,
       playerState: playerState ?? this.playerState,
       loopMode: loopMode ?? this.loopMode,
-      audio: removeAudio ? null : (audio ?? this.audio),
+      currentIndex: removeAudio ? 0 : currentIndex ?? this.currentIndex,
+      currentAudioTag: removeAudio ? null : (currentAudioTag ?? this.currentAudioTag),
     );
   }
 
   @override
-  List<Object?> get props => [isPlaying, position, duration, audio, loopMode];
+  List<Object?> get props => [
+    isPlaying,
+    position,
+    duration,
+    currentAudioTag,
+    loopMode,
+    playlist,
+    currentIndex,
+  ];
 }

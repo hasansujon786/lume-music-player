@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../cubit/audio_player_cubit.dart';
+import 'player_screen.dart';
 
 class SongsScreen extends StatefulWidget {
   const SongsScreen({super.key});
@@ -83,8 +84,8 @@ class _SongsScreenState extends State<SongsScreen> {
                       return ListTile(
                         onTap: () async {
                           final song = item.data![index];
-                          context.read<AudioPlayerCubit>().setAudioFile(song);
-                          Navigator.of(context).pushNamed('player');
+                          context.read<AudioPlayerCubit>().setAudioFromFile([song, item.data![index + 1]]);
+                          Navigator.of(context).pushNamed(PlayerScreen.routeName);
                         },
                         title: Text(item.data![index].title),
                         subtitle: Text(item.data![index].artist ?? 'No Artist'),

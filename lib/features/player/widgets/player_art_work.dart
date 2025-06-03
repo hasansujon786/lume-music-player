@@ -12,36 +12,39 @@ class PlayerArtWork extends StatefulWidget {
 }
 
 class _PlayerArtWorkState extends State<PlayerArtWork> {
+  double size = 320;
   int? artWorkId;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AudioPlayerCubit, AudioPlayerState>(
-      listenWhen: (prevState, state) => state.audio?.id != null && artWorkId != state.audio!.id,
+      listenWhen: (prevState, state) =>
+          state.currentAudioTag?.id != null && artWorkId != state.currentAudioTag?.id,
       listener: (context, state) {
-        setState(() => artWorkId = state.audio!.id);
+        setState(() => artWorkId = state.currentAudioTag?.id);
       },
       child: Column(
         children: [
           SizedBox(height: 32),
-          SizedBox(
-            height: 320,
-            width: 320,
-            child: artWorkId == null
-                ? buildEmptyArtwork()
-                : QueryArtworkWidget(
-                    nullArtworkWidget: buildEmptyArtwork(),
-                    artworkClipBehavior: Clip.none,
-                    id: artWorkId!,
-                    type: ArtworkType.AUDIO,
-                  ),
-          ),
+          artWorkId == null
+              ? buildEmptyArtwork()
+              : QueryArtworkWidget(
+                  artworkWidth: size,
+                  artworkHeight: size,
+                  size: size.toInt(),
+                  artworkQuality: FilterQuality.high,
+                  quality: 100,
+                  nullArtworkWidget: buildEmptyArtwork(),
+                  artworkClipBehavior: Clip.none,
+                  id: artWorkId!,
+                  type: ArtworkType.AUDIO,
+                ),
         ],
       ),
     );
   }
 
   Widget buildEmptyArtwork() {
-    return Icon(Icons.camera_alt_sharp);
+    return SizedBox(height: size, width: size, child: Icon(Icons.camera_alt_sharp));
   }
 }

@@ -57,11 +57,7 @@ class PlayerMainControlls extends StatelessWidget {
             TextButton(
               onPressed: () =>
                   context.read<AudioPlayerCubit>().seek(state.duration - Duration(seconds: 5)),
-              child: Text('5s before'),
-            ),
-            TextButton(
-              onPressed: () => context.read<AudioPlayerCubit>().setUrlAudio('asdf'),
-              child: Text('Set demo songs from url'),
+              child: Text('5s to end'),
             ),
           ],
         );
