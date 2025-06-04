@@ -18,10 +18,6 @@ class AudioListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      // onTap: () async {
-      //   context.read<MediaByArtistCubit>().loadSongsForArtist(items[index].id);
-      //   Navigator.of(context).pushNamed(Routes.songsByArtist);
-      // },
       title: Text(title),
       subtitle: Text(subtitle ?? ''),
       leading: ListArtwork(id: artworkId),

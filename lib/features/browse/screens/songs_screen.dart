@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/widgets/no_access_model.dart';
 import '../../browse/cubit/media_cubit.dart';
 import '../widgets/song_list_view.dart';
 
@@ -17,16 +16,8 @@ class SongsScreen extends StatelessWidget {
       ),
       body: BlocBuilder<MediaCubit, MediaState>(
         builder: (context, state) {
-          if (!state.hasPermission) {
-            return NoAccessModel();
-          }
-          if (state.isLoading) {
-            return const SizedBox();
-          }
-          if (state.error != null) {
-            return Center(child: Text(state.error.toString()));
-          }
-
+          if (state.isLoading) return const SizedBox();
+          if (state.error != null) return Center(child: Text(state.error.toString()));
           return SongListView(songs: state.songs);
         },
       ),

@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../features/browse/screens/artists_screen.dart';
-import '../../features/browse/screens/songs_by_artist_screen.dart';
-import '../../features/browse/screens/songs_screen.dart';
-import '../../features/home/screens/home_screen.dart';
-import '../../features/player/screens/player_screen.dart';
-import '../../features/player/screens/playlist.dart';
-import '../../features/setting/screens/permissions.dart';
 import 'routes.dart';
 
 class RouteGenerator {
@@ -26,7 +19,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => SongsScreen());
 
       case Routes.songsByArtist:
-        return MaterialPageRoute(builder: (context) => SongsByArtistScreen());
+        return MaterialPageRoute(
+          builder: (context) =>
+              SongsByArtistScreen(params: settings.arguments as SongsByArtistScreenaParams),
+        );
 
       case Routes.permissions:
         return MaterialPageRoute(builder: (context) => PermissionsScreen());

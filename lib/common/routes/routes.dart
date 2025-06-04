@@ -1,3 +1,11 @@
+export '../../features/browse/screens/songs_by_artist_screen.dart';
+export '../../features/browse/screens/artists_screen.dart';
+export '../../features/browse/screens/songs_screen.dart';
+export '../../features/home/screens/home_screen.dart';
+export '../../features/player/screens/player_screen.dart';
+export '../../features/player/screens/playlist.dart';
+export '../../features/setting/screens/permissions.dart';
+
 class Routes {
   // Global routes
   static const String landing = '/';

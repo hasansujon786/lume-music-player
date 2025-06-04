@@ -4,8 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/media_by_artist_cubit.dart';
 import '../widgets/song_list_view.dart';
 
+class SongsByArtistScreenaParams {
+  final String artistName;
+  const SongsByArtistScreenaParams({required this.artistName});
+}
+
 class SongsByArtistScreen extends StatefulWidget {
-  const SongsByArtistScreen({super.key});
+  final SongsByArtistScreenaParams params;
+  const SongsByArtistScreen({super.key, required this.params});
 
   @override
   State<SongsByArtistScreen> createState() => _SongsByArtistScreenState();
@@ -17,7 +23,7 @@ class _SongsByArtistScreenState extends State<SongsByArtistScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Artist'),
+        title: Text(widget.params.artistName),
       ),
       body: BlocBuilder<MediaByArtistCubit, MediaByArtistState>(
         builder: (context, state) {

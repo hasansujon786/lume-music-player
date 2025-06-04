@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../../../common/routes/routes.dart';
-import '../../../common/widgets/no_access_model.dart';
 import '../cubit/media_by_artist_cubit.dart';
 import '../cubit/media_cubit.dart';
 import '../widgets/audio_list_item.dart';
@@ -31,9 +30,6 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
       ),
       body: BlocBuilder<MediaCubit, MediaState>(
         builder: (context, state) {
-          if (!state.hasPermission) {
-            return NoAccessModel();
-          }
           if (state.isLoading) {
             return const SizedBox();
           }
@@ -59,8 +55,11 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
           title: item.artist,
           subtitle: 'Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}',
           onTap: () async {
-            context.read<MediaByArtistCubit>().loadSongsForArtist(items[index].id);
-            Navigator.of(context).pushNamed(Routes.songsByArtist);
+            context.read<MediaByArtistCubit>().loadSongsForArtist(item.id);
+            Navigator.of(context).pushNamed(
+              Routes.songsByArtist,
+              arguments: SongsByArtistScreenaParams(artistName: item.artist),
+            );
           },
         );
       },

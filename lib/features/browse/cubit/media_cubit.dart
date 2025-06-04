@@ -14,7 +14,14 @@ class MediaCubit extends Cubit<MediaState> {
   }
 
   Future<void> _init() async {
-    final hasPermission = await checkAndRequestPermissions();
+    var hasPermission = await _audioQuery.permissionsStatus();
+
+    if (!hasPermission) {
+      hasPermission = await Future.delayed(Duration(milliseconds: 400), checkAndRequestPermissions);
+    } else {
+      emit(state.copyWith(hasPermission: hasPermission));
+    }
+
     if (hasPermission) {
       loadSongs(retry: true);
     }
