@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
+import '../../../common/routes/routes.dart';
+import '../../../common/widgets/no_access_model.dart';
+import '../cubit/media_by_artist_cubit.dart';
 import '../cubit/media_cubit.dart';
+import '../widgets/audio_list_item.dart';
 
 class ArtistsScreen extends StatefulWidget {
   const ArtistsScreen({super.key});
@@ -12,16 +16,10 @@ class ArtistsScreen extends StatefulWidget {
 }
 
 class _ArtistsScreenState extends State<ArtistsScreen> {
-  final _audioQuery = AudioQueryManager().audioQuery;
-
   @override
   void initState() {
     super.initState();
     context.read<MediaCubit>().loadArtists();
-  }
-
-  checkAndRequestPermissions({bool retry = false}) async {
-    context.read<MediaCubit>().checkAndRequestPermissions(retry: true);
   }
 
   @override
@@ -34,7 +32,7 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
       body: BlocBuilder<MediaCubit, MediaState>(
         builder: (context, state) {
           if (!state.hasPermission) {
-            return noAccessToLibraryWidget();
+            return NoAccessModel();
           }
           if (state.isLoading) {
             return const SizedBox();
@@ -56,64 +54,16 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
-        return ListTile(
+        return AudioListItem(
+          artworkId: item.id,
+          title: item.artist,
+          subtitle: 'Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}',
           onTap: () async {
-            // final navigate = Navigator.of(context).pushNamed;
-            // await context.read<AudioPlayerCubit>().setAudioFromFile(
-            //   items,
-            //   shouldPlay: true,
-            //   index: index,
-            // );
-            // navigate(PlayerScreen.routeName);
+            context.read<MediaByArtistCubit>().loadSongsForArtist(items[index].id);
+            Navigator.of(context).pushNamed(Routes.songsByArtist);
           },
-          title: Text(item.artist),
-          subtitle: Text('Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}'),
-          leading: Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: QueryArtworkWidget(
-              artworkClipBehavior: Clip.none,
-              controller: _audioQuery,
-              id: items[index].id,
-              type: ArtworkType.AUDIO,
-            ),
-          ),
         );
       },
-    );
-  }
-
-  Widget noAccessToLibraryWidget() {
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.grey.shade200,
-          border: BoxBorder.all(color: Colors.grey.shade300),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 6),
-            const Text(
-              "Application doesn't have access to the library",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 18),
-            FilledButton.tonal(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.greenAccent.shade200),
-              ),
-              onPressed: () => checkAndRequestPermissions(retry: true),
-              child: const Text('Allow'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/browse/screens/artists_screen.dart';
+import '../../features/browse/screens/songs_by_artist_screen.dart';
 import '../../features/browse/screens/songs_screen.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/player/screens/player_screen.dart';
@@ -23,9 +24,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => ArtistsScreen());
       case Routes.browseSongs:
         return MaterialPageRoute(builder: (context) => SongsScreen());
+
+      case Routes.songsByArtist:
+        return MaterialPageRoute(builder: (context) => SongsByArtistScreen());
+
       case Routes.permissions:
         return MaterialPageRoute(builder: (context) => PermissionsScreen());
-
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen(title: 'LumeMusicPlayer'));
     }

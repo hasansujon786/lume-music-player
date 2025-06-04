@@ -10,7 +10,7 @@ class Routes {
 
   static const String permissions = '/permissions';
 
-  /**
-   * Page specific routes
-   */
+  // Page specific routes
+
+  static const String songsByArtist = '/songsByArtist';
 }
