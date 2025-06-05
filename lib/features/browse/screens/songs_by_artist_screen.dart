@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/media_by_artist_cubit.dart';
+import '../cubit/songs_by_artist_cubit.dart';
 import '../widgets/song_list_view.dart';
 
 class SongsByArtistScreenaParams {
@@ -25,12 +25,12 @@ class _SongsByArtistScreenState extends State<SongsByArtistScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.params.artistName),
       ),
-      body: BlocBuilder<MediaByArtistCubit, MediaByArtistState>(
+      body: BlocBuilder<SongsByArtistCubit, SongsByArtistState>(
         builder: (context, state) {
           return switch (state) {
-            Loading() => Center(child: Text('loading')),
-            Loaded(:final songs) => SongListView(songs: songs),
-            Error(:final message) => Center(child: Text('Error: $message')),
+            ArtistLoading() => Center(child: Text('loading')),
+            ArtistLoaded(:final songs) => SongListView(songs: songs),
+            ArtistError(:final message) => Center(child: Text('Error: $message')),
           };
         },
       ),

@@ -4,7 +4,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'media_by_artist_cubit.dart';
+part of 'songs_by_artist_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,7 +13,7 @@ part of 'media_by_artist_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$MediaByArtistState {
+mixin _$SongsByArtistState {
 
 
 
@@ -21,7 +21,7 @@ mixin _$MediaByArtistState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MediaByArtistState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SongsByArtistState);
 }
 
 
@@ -30,23 +30,23 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'MediaByArtistState()';
+  return 'SongsByArtistState()';
 }
 
 
 }
 
 /// @nodoc
-class $MediaByArtistStateCopyWith<$Res>  {
-$MediaByArtistStateCopyWith(MediaByArtistState _, $Res Function(MediaByArtistState) __);
+class $SongsByArtistStateCopyWith<$Res>  {
+$SongsByArtistStateCopyWith(SongsByArtistState _, $Res Function(SongsByArtistState) __);
 }
 
 
 /// @nodoc
 
 
-class Loading extends MediaByArtistState {
-  const Loading(): super._();
+class ArtistLoading extends SongsByArtistState {
+  const ArtistLoading(): super._();
   
 
 
@@ -56,7 +56,7 @@ class Loading extends MediaByArtistState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArtistLoading);
 }
 
 
@@ -65,7 +65,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'MediaByArtistState.loading()';
+  return 'SongsByArtistState.loading()';
 }
 
 
@@ -77,8 +77,8 @@ String toString() {
 /// @nodoc
 
 
-class Loaded extends MediaByArtistState {
-  const Loaded(final  List<SongModel> songs): _songs = songs,super._();
+class ArtistLoaded extends SongsByArtistState {
+  const ArtistLoaded(final  List<SongModel> songs): _songs = songs,super._();
   
 
  final  List<SongModel> _songs;
@@ -89,17 +89,17 @@ class Loaded extends MediaByArtistState {
 }
 
 
-/// Create a copy of MediaByArtistState
+/// Create a copy of SongsByArtistState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$LoadedCopyWith<Loaded> get copyWith => _$LoadedCopyWithImpl<Loaded>(this, _$identity);
+$ArtistLoadedCopyWith<ArtistLoaded> get copyWith => _$ArtistLoadedCopyWithImpl<ArtistLoaded>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._songs, _songs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArtistLoaded&&const DeepCollectionEquality().equals(other._songs, _songs));
 }
 
 
@@ -108,15 +108,15 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'MediaByArtistState.loaded(songs: $songs)';
+  return 'SongsByArtistState.loaded(songs: $songs)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $LoadedCopyWith<$Res> implements $MediaByArtistStateCopyWith<$Res> {
-  factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
+abstract mixin class $ArtistLoadedCopyWith<$Res> implements $SongsByArtistStateCopyWith<$Res> {
+  factory $ArtistLoadedCopyWith(ArtistLoaded value, $Res Function(ArtistLoaded) _then) = _$ArtistLoadedCopyWithImpl;
 @useResult
 $Res call({
  List<SongModel> songs
@@ -127,17 +127,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$LoadedCopyWithImpl<$Res>
-    implements $LoadedCopyWith<$Res> {
-  _$LoadedCopyWithImpl(this._self, this._then);
+class _$ArtistLoadedCopyWithImpl<$Res>
+    implements $ArtistLoadedCopyWith<$Res> {
+  _$ArtistLoadedCopyWithImpl(this._self, this._then);
 
-  final Loaded _self;
-  final $Res Function(Loaded) _then;
+  final ArtistLoaded _self;
+  final $Res Function(ArtistLoaded) _then;
 
-/// Create a copy of MediaByArtistState
+/// Create a copy of SongsByArtistState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? songs = null,}) {
-  return _then(Loaded(
+  return _then(ArtistLoaded(
 null == songs ? _self._songs : songs // ignore: cast_nullable_to_non_nullable
 as List<SongModel>,
   ));
@@ -149,23 +149,23 @@ as List<SongModel>,
 /// @nodoc
 
 
-class Error extends MediaByArtistState {
-  const Error(this.message): super._();
+class ArtistError extends SongsByArtistState {
+  const ArtistError(this.message): super._();
   
 
  final  String message;
 
-/// Create a copy of MediaByArtistState
+/// Create a copy of SongsByArtistState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identity);
+$ArtistErrorCopyWith<ArtistError> get copyWith => _$ArtistErrorCopyWithImpl<ArtistError>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArtistError&&(identical(other.message, message) || other.message == message));
 }
 
 
@@ -174,15 +174,15 @@ int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString() {
-  return 'MediaByArtistState.error(message: $message)';
+  return 'SongsByArtistState.error(message: $message)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<$Res> implements $MediaByArtistStateCopyWith<$Res> {
-  factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
+abstract mixin class $ArtistErrorCopyWith<$Res> implements $SongsByArtistStateCopyWith<$Res> {
+  factory $ArtistErrorCopyWith(ArtistError value, $Res Function(ArtistError) _then) = _$ArtistErrorCopyWithImpl;
 @useResult
 $Res call({
  String message
@@ -193,17 +193,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$ErrorCopyWithImpl<$Res>
-    implements $ErrorCopyWith<$Res> {
-  _$ErrorCopyWithImpl(this._self, this._then);
+class _$ArtistErrorCopyWithImpl<$Res>
+    implements $ArtistErrorCopyWith<$Res> {
+  _$ArtistErrorCopyWithImpl(this._self, this._then);
 
-  final Error _self;
-  final $Res Function(Error) _then;
+  final ArtistError _self;
+  final $Res Function(ArtistError) _then;
 
-/// Create a copy of MediaByArtistState
+/// Create a copy of SongsByArtistState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(Error(
+  return _then(ArtistError(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));

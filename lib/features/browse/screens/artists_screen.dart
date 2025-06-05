@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../../../common/routes/routes.dart';
-import '../cubit/media_by_artist_cubit.dart';
+import '../cubit/songs_by_artist_cubit.dart';
 import '../cubit/media_cubit.dart';
 import '../widgets/audio_list_item.dart';
 
@@ -55,7 +55,7 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
           title: item.artist,
           subtitle: 'Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}',
           onTap: () async {
-            context.read<MediaByArtistCubit>().loadSongsForArtist(item.id);
+            context.read<SongsByArtistCubit>().loadSongs(item.id);
             Navigator.of(context).pushNamed(
               Routes.songsByArtist,
               arguments: SongsByArtistScreenaParams(artistName: item.artist),

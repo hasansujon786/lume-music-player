@@ -23,7 +23,7 @@ class SongsByAlbumCubit extends BaseSongsBytypeCubit<SongsByAlbumState> {
 
 @freezed
 sealed class SongsByAlbumState with _$SongsByAlbumState {
-  const SongsByAlbumState._();
+  const SongsByAlbumState._(); // <== allows defining shared methods
 
   const factory SongsByAlbumState.loading() = AlbumLoading;
   const factory SongsByAlbumState.loaded(List<SongModel> songs) = AlbumLoaded;
