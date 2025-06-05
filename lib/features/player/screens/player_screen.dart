@@ -22,7 +22,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            children: [PlayerArtWork(), AudioTitle(), PlayerSlider(), PlayerMainControlls()],
+            children: [
+              SizedBox(height: 24),
+              PlayerArtWork(),
+              AudioTitle(),
+              PlayerSlider(),
+              PlayerMainControlls(),
+            ],
           ),
         ),
       ),

@@ -3,48 +3,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../cubit/audio_player_cubit.dart';
+import '../models/audio_tag.dart';
 
-class PlayerArtWork extends StatefulWidget {
+double playerArtworkSize = 320;
+
+class PlayerArtWork extends StatelessWidget {
   const PlayerArtWork({super.key});
 
   @override
-  State<PlayerArtWork> createState() => _PlayerArtWorkState();
-}
-
-class _PlayerArtWorkState extends State<PlayerArtWork> {
-  double size = 320;
-  int? artWorkId;
-
-  @override
   Widget build(BuildContext context) {
-    return BlocListener<AudioPlayerCubit, AudioPlayerState>(
-      listenWhen: (prevState, state) =>
-          state.currentAudioTag?.id != null && artWorkId != state.currentAudioTag?.id,
-      listener: (context, state) {
-        setState(() => artWorkId = state.currentAudioTag?.id);
+    return BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
+      selector: (state) => state.currentAudioTag,
+      builder: (context, currentAudioTag) {
+        return currentAudioTag == null
+            ? buildEmptyArtwork()
+            : QueryArtworkWidget(
+                artworkWidth: playerArtworkSize,
+                artworkHeight: playerArtworkSize,
+                size: playerArtworkSize.toInt(),
+                artworkQuality: FilterQuality.high,
+                quality: 100,
+                nullArtworkWidget: buildEmptyArtwork(),
+                artworkClipBehavior: Clip.none,
+                id: currentAudioTag.id,
+                type: ArtworkType.AUDIO,
+              );
       },
-      child: Column(
-        children: [
-          SizedBox(height: 32),
-          artWorkId == null
-              ? buildEmptyArtwork()
-              : QueryArtworkWidget(
-                  artworkWidth: size,
-                  artworkHeight: size,
-                  size: size.toInt(),
-                  artworkQuality: FilterQuality.high,
-                  quality: 100,
-                  nullArtworkWidget: buildEmptyArtwork(),
-                  artworkClipBehavior: Clip.none,
-                  id: artWorkId!,
-                  type: ArtworkType.AUDIO,
-                ),
-        ],
-      ),
     );
   }
 
   Widget buildEmptyArtwork() {
-    return SizedBox(height: size, width: size, child: Icon(Icons.camera_alt_sharp));
+    return SizedBox(
+      height: playerArtworkSize,
+      width: playerArtworkSize,
+      child: Icon(Icons.camera_alt_sharp),
+    );
   }
 }

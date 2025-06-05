@@ -11,7 +11,7 @@ class RouteGenerator {
       case Routes.player:
         return MaterialPageRoute(builder: (context) => PlayerScreen());
       case Routes.playlist:
-        return MaterialPageRoute(builder: (context) => Playlist());
+        return MaterialPageRoute(builder: (context) => Playlist(params: settings.arguments as PlaylistParams));
 
       case Routes.browseArtists:
         return MaterialPageRoute(builder: (context) => ArtistsScreen());

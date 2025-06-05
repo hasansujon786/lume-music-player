@@ -48,7 +48,10 @@ class PlayerMainControlls extends StatelessWidget {
                   isSelected: false,
                   icon: Icon(Icons.playlist_play_rounded),
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.playlist);
+                    Navigator.of(context).pushNamed(
+                      Routes.playlist,
+                      arguments: PlaylistParams(currentIndex: state.currentIndex),
+                    );
                   },
                 ),
               ],
