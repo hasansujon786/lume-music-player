@@ -49,6 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () => Navigator.pushNamed(context, Routes.browseArtists),
                   child: Text('Artists'),
                 ),
+                TextButton(
+                  onPressed: () => Navigator.pushNamed(context, Routes.browseAlbums),
+                  child: Text('Albums'),
+                ),
               ],
             );
           },

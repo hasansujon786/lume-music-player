@@ -5,6 +5,7 @@ import 'common/routes/route_generator.dart';
 import 'common/routes/routes.dart';
 import 'features/browse/cubit/media_by_artist_cubit.dart';
 import 'features/browse/cubit/media_cubit.dart';
+import 'features/browse/cubit/songs_by_album_cubit.dart';
 import 'features/player/cubit/audio_player_cubit.dart';
 import 'features/setting/cubit/settings_cubit.dart';
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<SettingsCubit>(create: (context) => SettingsCubit()),
         BlocProvider<MediaCubit>(create: (context) => MediaCubit(AudioQueryManager().audioQuery)),
         BlocProvider<MediaByArtistCubit>(create: (context) => MediaByArtistCubit(AudioQueryManager().audioQuery)),
+        BlocProvider<SongsByAlbumCubit>(create: (context) => SongsByAlbumCubit(AudioQueryManager().audioQuery)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
