@@ -6,8 +6,8 @@ import '../cubit/audio_player_cubit.dart';
 import '../models/audio_tag.dart';
 
 class PlaylistParams {
-  final int currentIndex;
-  const PlaylistParams({required this.currentIndex});
+  final int? currentIndex;
+  const PlaylistParams({this.currentIndex});
 }
 
 class Playlist extends StatefulWidget {
@@ -26,7 +26,9 @@ class _PlaylistState extends State<Playlist> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(widget.params.currentIndex * _itemHeight);
+      if (widget.params.currentIndex != null) {
+        _scrollController.jumpTo(widget.params.currentIndex! * _itemHeight);
+      }
     });
   }
 
@@ -45,7 +47,11 @@ class _PlaylistState extends State<Playlist> {
                 index: index,
                 audio: state.playlist[index],
                 onTap: () {
-                  context.read<AudioPlayerCubit>().selectAudioWithIndex(index);
+                  var playIndex = index;
+                  if (state.shuffleModeEnabled) {
+                    playIndex = context.read<AudioPlayerCubit>().shuffleIndices[index];
+                  }
+                  context.read<AudioPlayerCubit>().selectAudioWithIndex(playIndex);
                   context.read<AudioPlayerCubit>().play();
                 },
               );
@@ -83,14 +89,14 @@ class Item extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: BlocSelector<AudioPlayerCubit, AudioPlayerState, int>(
-          selector: (state) => state.currentIndex,
-          builder: (context, currentIndex) {
+        trailing: BlocSelector<AudioPlayerCubit, AudioPlayerState, int?>(
+          selector: (state) => state.currentSequenceIndex,
+          builder: (context, currentSequenceIndex) {
             return Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 6,
               children: [
-                currentIndex == index
+                currentSequenceIndex == index
                     ? Icon(Icons.play_arrow_rounded)
                     : Icon(Icons.remove, color: Colors.grey.shade300),
                 Icon(Icons.menu, color: Colors.grey.shade400),

@@ -1,11 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../models/audio_tag.dart';
 
-part 'audio_player_state.dart';
+part 'audio_player_cubit.freezed.dart';
 
 class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   final AudioPlayer _player = AudioPlayerManager().player;
@@ -20,7 +20,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     });
 
     _player.durationStream.listen((dur) {
-      emit(state.copyWith(duration: dur));
+      emit(state.copyWith(duration: dur ?? Duration.zero));
     });
 
     _player.playerStateStream.listen((playerState) {
@@ -58,17 +58,17 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   void seek(Duration position) => _player.seek(position);
   void toggle() => state.isPlaying ? pause() : _player.play();
   void toggleRepeatMode() => _player.setLoopMode(nextLoopMode(_player.loopMode));
+  Future<void> toggleShuffle() async {
+    final current = _player.shuffleModeEnabled;
+    await _player.setShuffleModeEnabled(!current);
+  }
 
   Future<void> next() async {
-    if (_player.hasNext) {
-      await _player.seekToNext();
-    }
+    if (_player.hasNext) await _player.seekToNext();
   }
 
   Future<void> prev() async {
-    if (_player.hasPrevious) {
-      await _player.seekToPrevious();
-    }
+    if (_player.hasPrevious) await _player.seekToPrevious();
   }
 
   Future<void> selectAudioWithIndex(int index) async {
@@ -81,23 +81,43 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     return super.close();
   }
 
+  List<int> get shuffleIndices {
+    return _player.sequenceState.shuffleIndices;
+  }
+
   void _listenForChangesInSequenceState() {
     _player.sequenceStateStream.listen((sequenceState) {
       final currentItem = sequenceState.currentSource;
-      // update playlist & current track
+      // update playlist
       final playlist = sequenceState.effectiveSequence;
       final tags = playlist.map((item) => item.tag as AudioTag).toList();
+
+      // Update the index of the currently playing song
+      // based on the effective playlist order (shuffled or not),
+      int? currentSequenceIndex;
+      if (_player.shuffleModeEnabled) {
+        final sequenceState = _player.sequenceState;
+
+        final effectiveSequence = sequenceState.effectiveSequence;
+        final currentSource = sequenceState.currentSource;
+
+        if (currentSource != null) {
+          currentSequenceIndex = effectiveSequence.indexOf(currentSource);
+        }
+      } else {
+        currentSequenceIndex = sequenceState.currentIndex;
+      }
+
       emit(
         state.copyWith(
           playlist: tags,
           currentIndex: sequenceState.currentIndex,
+          currentSequenceIndex: currentSequenceIndex,
           currentAudioTag: currentItem?.tag,
-          duration: currentItem?.duration,
+          shuffleModeEnabled: sequenceState.shuffleModeEnabled,
+          duration: currentItem?.duration ?? Duration.zero,
         ),
       );
-
-      // // update shuffle mode
-      // isShuffleModeEnabledNotifier.value = sequenceState.shuffleModeEnabled;
 
       // // update previous and next buttons
       // if (playlist.isEmpty || currentItem == null) {
@@ -151,4 +171,33 @@ class AudioPlayerManager {
 LoopMode nextLoopMode(LoopMode value) {
   final next = (value.index + 1) % LoopMode.values.length;
   return LoopMode.values[next];
+}
+
+@freezed
+abstract class AudioPlayerState with _$AudioPlayerState {
+  const factory AudioPlayerState({
+    Duration? position,
+    Duration? duration,
+    required bool isPlaying,
+    required PlayerState playerState,
+    required LoopMode loopMode,
+    required bool shuffleModeEnabled,
+    required List<AudioTag> playlist,
+    int? currentIndex,
+    int? currentSequenceIndex,
+    AudioTag? currentAudioTag,
+  }) = _AudioPlayerState;
+
+  const AudioPlayerState._(); // TODO: I need to larn _() call
+
+  factory AudioPlayerState.initial() => AudioPlayerState(
+    isPlaying: false,
+    position: Duration.zero,
+    duration: Duration.zero,
+    playerState: PlayerState(false, ProcessingState.idle),
+    loopMode: LoopMode.off,
+    shuffleModeEnabled: false,
+    currentIndex: 0,
+    playlist: [],
+  );
 }

@@ -46,21 +46,34 @@ class PlayerMainControlls extends StatelessWidget {
                 IconButton(
                   iconSize: 32,
                   isSelected: false,
+                  icon: Icon(
+                    state.shuffleModeEnabled ? Icons.shuffle_on_rounded : Icons.shuffle_rounded,
+                  ),
+                  onPressed: () => context.read<AudioPlayerCubit>().toggleShuffle(),
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Column(
+              children: [
+                IconButton(
+                  iconSize: 32,
+                  isSelected: false,
                   icon: Icon(Icons.playlist_play_rounded),
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       Routes.playlist,
-                      arguments: PlaylistParams(currentIndex: state.currentIndex),
+                      arguments: PlaylistParams(currentIndex: state.currentSequenceIndex),
                     );
                   },
                 ),
+                // TextButton(
+                //   onPressed: () {
+                //     // context.read<AudioPlayerCubit>().seek(state.duration - Duration(seconds: 5));
+                //   },
+                //   child: Text('5s to end'),
+                // ),
               ],
-            ),
-            // SizedBox(height: 100),
-            TextButton(
-              onPressed: () =>
-                  context.read<AudioPlayerCubit>().seek(state.duration - Duration(seconds: 5)),
-              child: Text('5s to end'),
             ),
           ],
         );

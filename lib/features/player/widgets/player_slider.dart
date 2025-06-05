@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/audio_player_cubit.dart';
 
-String formatDuration(Duration d) {
+String formatDuration(Duration? d) {
+  if (d == null) {
+    return '';
+  }
   final min = d.inMinutes.remainder(60);
   final sec = d.inSeconds.remainder(60);
   return "${min.toString().padLeft(2, "0")}:${sec.toString().padLeft(2, "0")}";
@@ -29,10 +32,10 @@ class _PlayerSliderState extends State<PlayerSlider> {
             Slider(
               padding: EdgeInsetsGeometry.symmetric(vertical: 4),
               min: 0.0,
-              max: state.duration.inSeconds.toDouble(),
+              max: state.duration?.inSeconds.toDouble() ?? 1,
               value: usingSlider
                   ? sliderValue.inSeconds.toDouble()
-                  : state.position.inSeconds.toDouble(),
+                  : state.position?.inSeconds.toDouble() ?? 0,
               onChanged: (value) {
                 setState(() => sliderValue = Duration(seconds: value.toInt()));
               },
