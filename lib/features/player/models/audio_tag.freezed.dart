@@ -16,7 +16,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AudioTag {
 
- int get id; String get data; String? get uri; String get displayName; String get displayNameWOExt; int get size; String? get album; int? get albumId; String? get artist; int? get artistId; String? get genre; int? get genreId; int? get bookmark; String? get composer; int? get dateAdded; int? get dateModified; int? get duration; String get title; int? get track; String get fileExtension; bool get isAlarm; bool get isAudioBook; bool get isMusic; bool get isNotification; bool get isPodcast; bool get isRingtone;
+ int get id; String get data; String? get uri; String get displayName; String get displayNameWOExt; int get size; String? get album; int? get albumId; String? get artist; int? get artistId; String? get genre;// int? genreId,
+ int? get bookmark; String? get composer; int? get dateAdded; int? get dateModified; int? get duration; String get title; int? get track; String get fileExtension; bool get isAlarm; bool get isAudioBook; bool get isMusic; bool get isNotification; bool get isPodcast; bool get isRingtone;
 /// Create a copy of AudioTag
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +30,16 @@ $AudioTagCopyWith<AudioTag> get copyWith => _$AudioTagCopyWithImpl<AudioTag>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AudioTag&&(identical(other.id, id) || other.id == id)&&(identical(other.data, data) || other.data == data)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.displayNameWOExt, displayNameWOExt) || other.displayNameWOExt == displayNameWOExt)&&(identical(other.size, size) || other.size == size)&&(identical(other.album, album) || other.album == album)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.artistId, artistId) || other.artistId == artistId)&&(identical(other.genre, genre) || other.genre == genre)&&(identical(other.genreId, genreId) || other.genreId == genreId)&&(identical(other.bookmark, bookmark) || other.bookmark == bookmark)&&(identical(other.composer, composer) || other.composer == composer)&&(identical(other.dateAdded, dateAdded) || other.dateAdded == dateAdded)&&(identical(other.dateModified, dateModified) || other.dateModified == dateModified)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.title, title) || other.title == title)&&(identical(other.track, track) || other.track == track)&&(identical(other.fileExtension, fileExtension) || other.fileExtension == fileExtension)&&(identical(other.isAlarm, isAlarm) || other.isAlarm == isAlarm)&&(identical(other.isAudioBook, isAudioBook) || other.isAudioBook == isAudioBook)&&(identical(other.isMusic, isMusic) || other.isMusic == isMusic)&&(identical(other.isNotification, isNotification) || other.isNotification == isNotification)&&(identical(other.isPodcast, isPodcast) || other.isPodcast == isPodcast)&&(identical(other.isRingtone, isRingtone) || other.isRingtone == isRingtone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AudioTag&&(identical(other.id, id) || other.id == id)&&(identical(other.data, data) || other.data == data)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.displayNameWOExt, displayNameWOExt) || other.displayNameWOExt == displayNameWOExt)&&(identical(other.size, size) || other.size == size)&&(identical(other.album, album) || other.album == album)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.artistId, artistId) || other.artistId == artistId)&&(identical(other.genre, genre) || other.genre == genre)&&(identical(other.bookmark, bookmark) || other.bookmark == bookmark)&&(identical(other.composer, composer) || other.composer == composer)&&(identical(other.dateAdded, dateAdded) || other.dateAdded == dateAdded)&&(identical(other.dateModified, dateModified) || other.dateModified == dateModified)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.title, title) || other.title == title)&&(identical(other.track, track) || other.track == track)&&(identical(other.fileExtension, fileExtension) || other.fileExtension == fileExtension)&&(identical(other.isAlarm, isAlarm) || other.isAlarm == isAlarm)&&(identical(other.isAudioBook, isAudioBook) || other.isAudioBook == isAudioBook)&&(identical(other.isMusic, isMusic) || other.isMusic == isMusic)&&(identical(other.isNotification, isNotification) || other.isNotification == isNotification)&&(identical(other.isPodcast, isPodcast) || other.isPodcast == isPodcast)&&(identical(other.isRingtone, isRingtone) || other.isRingtone == isRingtone));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,data,uri,displayName,displayNameWOExt,size,album,albumId,artist,artistId,genre,genreId,bookmark,composer,dateAdded,dateModified,duration,title,track,fileExtension,isAlarm,isAudioBook,isMusic,isNotification,isPodcast,isRingtone]);
+int get hashCode => Object.hashAll([runtimeType,id,data,uri,displayName,displayNameWOExt,size,album,albumId,artist,artistId,genre,bookmark,composer,dateAdded,dateModified,duration,title,track,fileExtension,isAlarm,isAudioBook,isMusic,isNotification,isPodcast,isRingtone]);
 
 @override
 String toString() {
-  return 'AudioTag(id: $id, data: $data, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, genreId: $genreId, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
+  return 'AudioTag(id: $id, data: $data, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
 }
 
 
@@ -49,7 +50,7 @@ abstract mixin class $AudioTagCopyWith<$Res>  {
   factory $AudioTagCopyWith(AudioTag value, $Res Function(AudioTag) _then) = _$AudioTagCopyWithImpl;
 @useResult
 $Res call({
- int id, String data, String? uri, String displayName, String displayNameWOExt, int size, String? album, int? albumId, String? artist, int? artistId, String? genre, int? genreId, int? bookmark, String? composer, int? dateAdded, int? dateModified, int? duration, String title, int? track, String fileExtension, bool isAlarm, bool isAudioBook, bool isMusic, bool isNotification, bool isPodcast, bool isRingtone
+ int id, String data, String? uri, String displayName, String displayNameWOExt, int size, String? album, int? albumId, String? artist, int? artistId, String? genre, int? bookmark, String? composer, int? dateAdded, int? dateModified, int? duration, String title, int? track, String fileExtension, bool isAlarm, bool isAudioBook, bool isMusic, bool isNotification, bool isPodcast, bool isRingtone
 });
 
 
@@ -66,7 +67,7 @@ class _$AudioTagCopyWithImpl<$Res>
 
 /// Create a copy of AudioTag
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? data = null,Object? uri = freezed,Object? displayName = null,Object? displayNameWOExt = null,Object? size = null,Object? album = freezed,Object? albumId = freezed,Object? artist = freezed,Object? artistId = freezed,Object? genre = freezed,Object? genreId = freezed,Object? bookmark = freezed,Object? composer = freezed,Object? dateAdded = freezed,Object? dateModified = freezed,Object? duration = freezed,Object? title = null,Object? track = freezed,Object? fileExtension = null,Object? isAlarm = null,Object? isAudioBook = null,Object? isMusic = null,Object? isNotification = null,Object? isPodcast = null,Object? isRingtone = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? data = null,Object? uri = freezed,Object? displayName = null,Object? displayNameWOExt = null,Object? size = null,Object? album = freezed,Object? albumId = freezed,Object? artist = freezed,Object? artistId = freezed,Object? genre = freezed,Object? bookmark = freezed,Object? composer = freezed,Object? dateAdded = freezed,Object? dateModified = freezed,Object? duration = freezed,Object? title = null,Object? track = freezed,Object? fileExtension = null,Object? isAlarm = null,Object? isAudioBook = null,Object? isMusic = null,Object? isNotification = null,Object? isPodcast = null,Object? isRingtone = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
@@ -79,8 +80,7 @@ as String?,albumId: freezed == albumId ? _self.albumId : albumId // ignore: cast
 as int?,artist: freezed == artist ? _self.artist : artist // ignore: cast_nullable_to_non_nullable
 as String?,artistId: freezed == artistId ? _self.artistId : artistId // ignore: cast_nullable_to_non_nullable
 as int?,genre: freezed == genre ? _self.genre : genre // ignore: cast_nullable_to_non_nullable
-as String?,genreId: freezed == genreId ? _self.genreId : genreId // ignore: cast_nullable_to_non_nullable
-as int?,bookmark: freezed == bookmark ? _self.bookmark : bookmark // ignore: cast_nullable_to_non_nullable
+as String?,bookmark: freezed == bookmark ? _self.bookmark : bookmark // ignore: cast_nullable_to_non_nullable
 as int?,composer: freezed == composer ? _self.composer : composer // ignore: cast_nullable_to_non_nullable
 as String?,dateAdded: freezed == dateAdded ? _self.dateAdded : dateAdded // ignore: cast_nullable_to_non_nullable
 as int?,dateModified: freezed == dateModified ? _self.dateModified : dateModified // ignore: cast_nullable_to_non_nullable
@@ -105,7 +105,7 @@ as bool,
 @JsonSerializable()
 
 class _AudioTag implements AudioTag {
-  const _AudioTag({required this.id, required this.data, this.uri, required this.displayName, required this.displayNameWOExt, required this.size, this.album, this.albumId, this.artist, this.artistId, this.genre, this.genreId, this.bookmark, this.composer, this.dateAdded, this.dateModified, this.duration, required this.title, this.track, required this.fileExtension, required this.isAlarm, required this.isAudioBook, required this.isMusic, required this.isNotification, required this.isPodcast, required this.isRingtone});
+  const _AudioTag({required this.id, required this.data, this.uri, required this.displayName, required this.displayNameWOExt, required this.size, this.album, this.albumId, this.artist, this.artistId, this.genre, this.bookmark, this.composer, this.dateAdded, this.dateModified, this.duration, required this.title, this.track, required this.fileExtension, required this.isAlarm, required this.isAudioBook, required this.isMusic, required this.isNotification, required this.isPodcast, required this.isRingtone});
   factory _AudioTag.fromJson(Map<String, dynamic> json) => _$AudioTagFromJson(json);
 
 @override final  int id;
@@ -119,7 +119,7 @@ class _AudioTag implements AudioTag {
 @override final  String? artist;
 @override final  int? artistId;
 @override final  String? genre;
-@override final  int? genreId;
+// int? genreId,
 @override final  int? bookmark;
 @override final  String? composer;
 @override final  int? dateAdded;
@@ -148,16 +148,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AudioTag&&(identical(other.id, id) || other.id == id)&&(identical(other.data, data) || other.data == data)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.displayNameWOExt, displayNameWOExt) || other.displayNameWOExt == displayNameWOExt)&&(identical(other.size, size) || other.size == size)&&(identical(other.album, album) || other.album == album)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.artistId, artistId) || other.artistId == artistId)&&(identical(other.genre, genre) || other.genre == genre)&&(identical(other.genreId, genreId) || other.genreId == genreId)&&(identical(other.bookmark, bookmark) || other.bookmark == bookmark)&&(identical(other.composer, composer) || other.composer == composer)&&(identical(other.dateAdded, dateAdded) || other.dateAdded == dateAdded)&&(identical(other.dateModified, dateModified) || other.dateModified == dateModified)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.title, title) || other.title == title)&&(identical(other.track, track) || other.track == track)&&(identical(other.fileExtension, fileExtension) || other.fileExtension == fileExtension)&&(identical(other.isAlarm, isAlarm) || other.isAlarm == isAlarm)&&(identical(other.isAudioBook, isAudioBook) || other.isAudioBook == isAudioBook)&&(identical(other.isMusic, isMusic) || other.isMusic == isMusic)&&(identical(other.isNotification, isNotification) || other.isNotification == isNotification)&&(identical(other.isPodcast, isPodcast) || other.isPodcast == isPodcast)&&(identical(other.isRingtone, isRingtone) || other.isRingtone == isRingtone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AudioTag&&(identical(other.id, id) || other.id == id)&&(identical(other.data, data) || other.data == data)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.displayNameWOExt, displayNameWOExt) || other.displayNameWOExt == displayNameWOExt)&&(identical(other.size, size) || other.size == size)&&(identical(other.album, album) || other.album == album)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.artistId, artistId) || other.artistId == artistId)&&(identical(other.genre, genre) || other.genre == genre)&&(identical(other.bookmark, bookmark) || other.bookmark == bookmark)&&(identical(other.composer, composer) || other.composer == composer)&&(identical(other.dateAdded, dateAdded) || other.dateAdded == dateAdded)&&(identical(other.dateModified, dateModified) || other.dateModified == dateModified)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.title, title) || other.title == title)&&(identical(other.track, track) || other.track == track)&&(identical(other.fileExtension, fileExtension) || other.fileExtension == fileExtension)&&(identical(other.isAlarm, isAlarm) || other.isAlarm == isAlarm)&&(identical(other.isAudioBook, isAudioBook) || other.isAudioBook == isAudioBook)&&(identical(other.isMusic, isMusic) || other.isMusic == isMusic)&&(identical(other.isNotification, isNotification) || other.isNotification == isNotification)&&(identical(other.isPodcast, isPodcast) || other.isPodcast == isPodcast)&&(identical(other.isRingtone, isRingtone) || other.isRingtone == isRingtone));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,data,uri,displayName,displayNameWOExt,size,album,albumId,artist,artistId,genre,genreId,bookmark,composer,dateAdded,dateModified,duration,title,track,fileExtension,isAlarm,isAudioBook,isMusic,isNotification,isPodcast,isRingtone]);
+int get hashCode => Object.hashAll([runtimeType,id,data,uri,displayName,displayNameWOExt,size,album,albumId,artist,artistId,genre,bookmark,composer,dateAdded,dateModified,duration,title,track,fileExtension,isAlarm,isAudioBook,isMusic,isNotification,isPodcast,isRingtone]);
 
 @override
 String toString() {
-  return 'AudioTag(id: $id, data: $data, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, genreId: $genreId, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
+  return 'AudioTag(id: $id, data: $data, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
 }
 
 
@@ -168,7 +168,7 @@ abstract mixin class _$AudioTagCopyWith<$Res> implements $AudioTagCopyWith<$Res>
   factory _$AudioTagCopyWith(_AudioTag value, $Res Function(_AudioTag) _then) = __$AudioTagCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String data, String? uri, String displayName, String displayNameWOExt, int size, String? album, int? albumId, String? artist, int? artistId, String? genre, int? genreId, int? bookmark, String? composer, int? dateAdded, int? dateModified, int? duration, String title, int? track, String fileExtension, bool isAlarm, bool isAudioBook, bool isMusic, bool isNotification, bool isPodcast, bool isRingtone
+ int id, String data, String? uri, String displayName, String displayNameWOExt, int size, String? album, int? albumId, String? artist, int? artistId, String? genre, int? bookmark, String? composer, int? dateAdded, int? dateModified, int? duration, String title, int? track, String fileExtension, bool isAlarm, bool isAudioBook, bool isMusic, bool isNotification, bool isPodcast, bool isRingtone
 });
 
 
@@ -185,7 +185,7 @@ class __$AudioTagCopyWithImpl<$Res>
 
 /// Create a copy of AudioTag
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? data = null,Object? uri = freezed,Object? displayName = null,Object? displayNameWOExt = null,Object? size = null,Object? album = freezed,Object? albumId = freezed,Object? artist = freezed,Object? artistId = freezed,Object? genre = freezed,Object? genreId = freezed,Object? bookmark = freezed,Object? composer = freezed,Object? dateAdded = freezed,Object? dateModified = freezed,Object? duration = freezed,Object? title = null,Object? track = freezed,Object? fileExtension = null,Object? isAlarm = null,Object? isAudioBook = null,Object? isMusic = null,Object? isNotification = null,Object? isPodcast = null,Object? isRingtone = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? data = null,Object? uri = freezed,Object? displayName = null,Object? displayNameWOExt = null,Object? size = null,Object? album = freezed,Object? albumId = freezed,Object? artist = freezed,Object? artistId = freezed,Object? genre = freezed,Object? bookmark = freezed,Object? composer = freezed,Object? dateAdded = freezed,Object? dateModified = freezed,Object? duration = freezed,Object? title = null,Object? track = freezed,Object? fileExtension = null,Object? isAlarm = null,Object? isAudioBook = null,Object? isMusic = null,Object? isNotification = null,Object? isPodcast = null,Object? isRingtone = null,}) {
   return _then(_AudioTag(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
@@ -198,8 +198,7 @@ as String?,albumId: freezed == albumId ? _self.albumId : albumId // ignore: cast
 as int?,artist: freezed == artist ? _self.artist : artist // ignore: cast_nullable_to_non_nullable
 as String?,artistId: freezed == artistId ? _self.artistId : artistId // ignore: cast_nullable_to_non_nullable
 as int?,genre: freezed == genre ? _self.genre : genre // ignore: cast_nullable_to_non_nullable
-as String?,genreId: freezed == genreId ? _self.genreId : genreId // ignore: cast_nullable_to_non_nullable
-as int?,bookmark: freezed == bookmark ? _self.bookmark : bookmark // ignore: cast_nullable_to_non_nullable
+as String?,bookmark: freezed == bookmark ? _self.bookmark : bookmark // ignore: cast_nullable_to_non_nullable
 as int?,composer: freezed == composer ? _self.composer : composer // ignore: cast_nullable_to_non_nullable
 as String?,dateAdded: freezed == dateAdded ? _self.dateAdded : dateAdded // ignore: cast_nullable_to_non_nullable
 as int?,dateModified: freezed == dateModified ? _self.dateModified : dateModified // ignore: cast_nullable_to_non_nullable

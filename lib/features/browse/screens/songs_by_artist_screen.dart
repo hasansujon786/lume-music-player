@@ -21,10 +21,7 @@ class _SongsByArtistScreenState extends State<SongsByArtistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.params.artistName),
-      ),
+      appBar: AppBar(title: Text(widget.params.artistName)),
       body: BlocBuilder<SongsByArtistCubit, SongsByArtistState>(
         builder: (context, state) {
           return switch (state) {

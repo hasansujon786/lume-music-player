@@ -16,10 +16,7 @@ class SongsByAlbumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(params.albumName),
-      ),
+      appBar: AppBar(title: Text(params.albumName)),
       body: BlocBuilder<SongsByAlbumCubit, SongsByAlbumState>(
         builder: (context, state) {
           return switch (state) {

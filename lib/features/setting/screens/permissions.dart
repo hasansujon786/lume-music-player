@@ -14,10 +14,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Permissions'),
-      ),
+      appBar: AppBar(title: Text('Permissions')),
       body: PermissionHandlerWidget(),
     );
   }

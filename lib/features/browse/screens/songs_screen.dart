@@ -10,10 +10,7 @@ class SongsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Songs'),
-      ),
+      appBar: AppBar(title: const Text('Songs')),
       body: BlocBuilder<MediaCubit, MediaState>(
         builder: (context, state) {
           if (state.isLoading) return const SizedBox();

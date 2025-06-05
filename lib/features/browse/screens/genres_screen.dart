@@ -3,28 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../../../common/routes/routes.dart';
-import '../cubit/songs_by_artist_cubit.dart';
 import '../cubit/media_cubit.dart';
+import '../cubit/songs_by_genre_cubit.dart';
 import '../widgets/audio_list_item.dart';
 
-class ArtistsScreen extends StatefulWidget {
-  const ArtistsScreen({super.key});
+class GenresScreen extends StatefulWidget {
+  const GenresScreen({super.key});
 
   @override
-  State<ArtistsScreen> createState() => _ArtistsScreenState();
+  State<GenresScreen> createState() => _GenresScreenState();
 }
 
-class _ArtistsScreenState extends State<ArtistsScreen> {
+class _GenresScreenState extends State<GenresScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<MediaCubit>().loadArtists();
+    context.read<MediaCubit>().loadGenres();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Artists')),
+      appBar: AppBar(title: const Text('Genres')),
       body: BlocBuilder<MediaCubit, MediaState>(
         builder: (context, state) {
           if (state.isLoading) {
@@ -34,13 +34,13 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
             return Text(state.error.toString());
           }
 
-          return buildListView(state.artists);
+          return buildListView(state.genres);
         },
       ),
     );
   }
 
-  Widget buildListView(List<ArtistModel> items) {
+  Widget buildListView(List<GenreModel> items) {
     if (items.isEmpty) return const Text('Nothing found!');
 
     return ListView.builder(
@@ -49,13 +49,13 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
         final item = items[index];
         return AudioListItem(
           artworkId: item.id,
-          title: item.artist,
-          subtitle: 'Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}',
+          title: item.genre,
+          subtitle: 'Tracks: ${item.numOfSongs}',
           onTap: () async {
-            context.read<SongsByArtistCubit>().loadSongs(item.id);
+            context.read<SongsByGenreCubit>().loadSongs(item.id);
             Navigator.of(context).pushNamed(
-              Routes.songsByArtist,
-              arguments: SongsByArtistScreenaParams(artistName: item.artist),
+              Routes.songsByGenre,
+              arguments: SongsByGenreScreenParams(genreName: item.genre),
             );
           },
         );

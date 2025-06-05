@@ -12,6 +12,20 @@ String formatDuration(Duration? d) {
   return "${min.toString().padLeft(2, "0")}:${sec.toString().padLeft(2, "0")}";
 }
 
+double _getSliderValue(
+  Duration? position,
+  Duration? duration,
+  bool usingSlider,
+  Duration sliderValue,
+) {
+  if (usingSlider) {
+    return sliderValue.inSeconds.toDouble();
+  }
+  return position != null && duration != null
+      ? position.inSeconds.clamp(0, duration.inSeconds).toDouble()
+      : 0.0;
+}
+
 class PlayerSlider extends StatefulWidget {
   const PlayerSlider({super.key});
 
@@ -33,13 +47,12 @@ class _PlayerSliderState extends State<PlayerSlider> {
               padding: EdgeInsetsGeometry.symmetric(vertical: 4),
               min: 0.0,
               max: state.duration?.inSeconds.toDouble() ?? 1,
-              value: usingSlider
-                  ? sliderValue.inSeconds.toDouble()
-                  : state.position?.inSeconds.toDouble() ?? 0,
+              value: _getSliderValue(state.position, state.duration, usingSlider, sliderValue),
               onChanged: (value) {
                 setState(() => sliderValue = Duration(seconds: value.toInt()));
               },
               onChangeStart: (value) {
+                sliderValue = state.position!;
                 usingSlider = true;
               },
               onChangeEnd: (value) {
@@ -51,7 +64,7 @@ class _PlayerSliderState extends State<PlayerSlider> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(formatDuration(state.position)),
+                Text(formatDuration(usingSlider ? sliderValue : state.position)),
                 SizedBox(width: 12),
                 Text(formatDuration(state.duration)),
               ],

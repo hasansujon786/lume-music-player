@@ -21,6 +21,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => ArtistsScreen());
       case Routes.browseAlbums:
         return MaterialPageRoute(builder: (context) => AlbumsScreen());
+      case Routes.browseGenres:
+        return MaterialPageRoute(builder: (context) => GenresScreen());
 
       case Routes.songsByArtist:
         return MaterialPageRoute(
@@ -31,6 +33,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) =>
               SongsByAlbumScreen(params: settings.arguments as SongsByAlbumScreenParams),
+        );
+      case Routes.songsByGenre:
+        return MaterialPageRoute(
+          builder: (context) =>
+              SongsByGenreScreen(params: settings.arguments as SongsByGenreScreenParams),
         );
 
       case Routes.permissions:

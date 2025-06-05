@@ -73,6 +73,18 @@ class MediaCubit extends Cubit<MediaState> {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }
   }
+
+  Future<void> loadGenres({bool retry = false}) async {
+    if (!retry && state.genres.isNotEmpty) return;
+
+    emit(state.copyWith(isLoading: true));
+    try {
+      final genres = await _audioQuery.queryGenres();
+      emit(state.copyWith(isLoading: false, genres: genres));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: e.toString()));
+    }
+  }
 }
 
 @freezed
@@ -81,6 +93,7 @@ abstract class MediaState with _$MediaState {
     @Default([]) List<SongModel> songs,
     @Default([]) List<ArtistModel> artists,
     @Default([]) List<AlbumModel> albums,
+    @Default([]) List<GenreModel> genres,
     @Default(false) bool isLoading,
     @Default(false) bool hasPermission,
     String? error,
