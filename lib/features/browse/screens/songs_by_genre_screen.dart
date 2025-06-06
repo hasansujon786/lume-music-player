@@ -16,10 +16,7 @@ class SongsByGenreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(params.genreName),
-      ),
+      appBar: AppBar(title: Text(params.genreName)),
       body: BlocBuilder<SongsByGenreCubit, SongsByGenreState>(
         builder: (context, state) {
           return switch (state) {

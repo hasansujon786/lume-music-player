@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MediaState {
 
- List<SongModel> get songs; List<ArtistModel> get artists; List<AlbumModel> get albums; List<GenreModel> get genres; bool get isLoading; bool get hasPermission; String? get error;
+ List<SongModel> get songs; List<ArtistModel> get artists; List<AlbumModel> get albums; List<GenreModel> get genres; bool get isLoading; bool? get hasPermission; String? get error;
 /// Create a copy of MediaState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $MediaStateCopyWith<$Res>  {
   factory $MediaStateCopyWith(MediaState value, $Res Function(MediaState) _then) = _$MediaStateCopyWithImpl;
 @useResult
 $Res call({
- List<SongModel> songs, List<ArtistModel> artists, List<AlbumModel> albums, List<GenreModel> genres, bool isLoading, bool hasPermission, String? error
+ List<SongModel> songs, List<ArtistModel> artists, List<AlbumModel> albums, List<GenreModel> genres, bool isLoading, bool? hasPermission, String? error
 });
 
 
@@ -63,15 +63,15 @@ class _$MediaStateCopyWithImpl<$Res>
 
 /// Create a copy of MediaState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? songs = null,Object? artists = null,Object? albums = null,Object? genres = null,Object? isLoading = null,Object? hasPermission = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? songs = null,Object? artists = null,Object? albums = null,Object? genres = null,Object? isLoading = null,Object? hasPermission = freezed,Object? error = freezed,}) {
   return _then(_self.copyWith(
 songs: null == songs ? _self.songs : songs // ignore: cast_nullable_to_non_nullable
 as List<SongModel>,artists: null == artists ? _self.artists : artists // ignore: cast_nullable_to_non_nullable
 as List<ArtistModel>,albums: null == albums ? _self.albums : albums // ignore: cast_nullable_to_non_nullable
 as List<AlbumModel>,genres: null == genres ? _self.genres : genres // ignore: cast_nullable_to_non_nullable
 as List<GenreModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,hasPermission: null == hasPermission ? _self.hasPermission : hasPermission // ignore: cast_nullable_to_non_nullable
-as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as bool,hasPermission: freezed == hasPermission ? _self.hasPermission : hasPermission // ignore: cast_nullable_to_non_nullable
+as bool?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -83,7 +83,7 @@ as String?,
 
 
 class _MediaState implements MediaState {
-  const _MediaState({final  List<SongModel> songs = const [], final  List<ArtistModel> artists = const [], final  List<AlbumModel> albums = const [], final  List<GenreModel> genres = const [], this.isLoading = false, this.hasPermission = false, this.error}): _songs = songs,_artists = artists,_albums = albums,_genres = genres;
+  const _MediaState({final  List<SongModel> songs = const [], final  List<ArtistModel> artists = const [], final  List<AlbumModel> albums = const [], final  List<GenreModel> genres = const [], this.isLoading = false, this.hasPermission = null, this.error}): _songs = songs,_artists = artists,_albums = albums,_genres = genres;
   
 
  final  List<SongModel> _songs;
@@ -115,7 +115,7 @@ class _MediaState implements MediaState {
 }
 
 @override@JsonKey() final  bool isLoading;
-@override@JsonKey() final  bool hasPermission;
+@override@JsonKey() final  bool? hasPermission;
 @override final  String? error;
 
 /// Create a copy of MediaState
@@ -148,7 +148,7 @@ abstract mixin class _$MediaStateCopyWith<$Res> implements $MediaStateCopyWith<$
   factory _$MediaStateCopyWith(_MediaState value, $Res Function(_MediaState) _then) = __$MediaStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<SongModel> songs, List<ArtistModel> artists, List<AlbumModel> albums, List<GenreModel> genres, bool isLoading, bool hasPermission, String? error
+ List<SongModel> songs, List<ArtistModel> artists, List<AlbumModel> albums, List<GenreModel> genres, bool isLoading, bool? hasPermission, String? error
 });
 
 
@@ -165,15 +165,15 @@ class __$MediaStateCopyWithImpl<$Res>
 
 /// Create a copy of MediaState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? songs = null,Object? artists = null,Object? albums = null,Object? genres = null,Object? isLoading = null,Object? hasPermission = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? songs = null,Object? artists = null,Object? albums = null,Object? genres = null,Object? isLoading = null,Object? hasPermission = freezed,Object? error = freezed,}) {
   return _then(_MediaState(
 songs: null == songs ? _self._songs : songs // ignore: cast_nullable_to_non_nullable
 as List<SongModel>,artists: null == artists ? _self._artists : artists // ignore: cast_nullable_to_non_nullable
 as List<ArtistModel>,albums: null == albums ? _self._albums : albums // ignore: cast_nullable_to_non_nullable
 as List<AlbumModel>,genres: null == genres ? _self._genres : genres // ignore: cast_nullable_to_non_nullable
 as List<GenreModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,hasPermission: null == hasPermission ? _self.hasPermission : hasPermission // ignore: cast_nullable_to_non_nullable
-as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as bool,hasPermission: freezed == hasPermission ? _self.hasPermission : hasPermission // ignore: cast_nullable_to_non_nullable
+as bool?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

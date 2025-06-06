@@ -95,7 +95,7 @@ abstract class MediaState with _$MediaState {
     @Default([]) List<AlbumModel> albums,
     @Default([]) List<GenreModel> genres,
     @Default(false) bool isLoading,
-    @Default(false) bool hasPermission,
+    @Default(null) bool? hasPermission,
     String? error,
   }) = _MediaState;
 }

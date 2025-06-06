@@ -30,8 +30,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+        title: 'Lume music player',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: 'SegoeUI'
+        ),
         onGenerateRoute: RouteGenerator.generateRoute,
         initialRoute: Routes.landing,
       ),
