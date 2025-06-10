@@ -7,14 +7,14 @@ import '../cubit/media_cubit.dart';
 import '../cubit/songs_by_album_cubit.dart';
 import '../widgets/audio_list_item.dart';
 
-class AlbumsScreen extends StatefulWidget {
-  const AlbumsScreen({super.key});
+class AlbumListPage extends StatefulWidget {
+  const AlbumListPage({super.key});
 
   @override
-  State<AlbumsScreen> createState() => _AlbumsScreenState();
+  State<AlbumListPage> createState() => _AlbumListPageState();
 }
 
-class _AlbumsScreenState extends State<AlbumsScreen> {
+class _AlbumListPageState extends State<AlbumListPage> {
   @override
   void initState() {
     super.initState();
@@ -23,20 +23,17 @@ class _AlbumsScreenState extends State<AlbumsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Albums')),
-      body: BlocBuilder<MediaCubit, MediaState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const SizedBox();
-          }
-          if (state.error != null) {
-            return Text(state.error.toString());
-          }
+    return BlocBuilder<MediaCubit, MediaState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const SizedBox();
+        }
+        if (state.error != null) {
+          return Text(state.error.toString());
+        }
 
-          return buildListView(state.albums);
-        },
-      ),
+        return buildListView(state.albums);
+      },
     );
   }
 

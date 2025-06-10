@@ -7,36 +7,34 @@ import '../cubit/songs_by_artist_cubit.dart';
 import '../cubit/media_cubit.dart';
 import '../widgets/audio_list_item.dart';
 
-class ArtistsScreen extends StatefulWidget {
-  const ArtistsScreen({super.key});
+class ArtistListPage extends StatefulWidget {
+  const ArtistListPage({super.key});
 
   @override
-  State<ArtistsScreen> createState() => _ArtistsScreenState();
+  State<ArtistListPage> createState() => _ArtistListPageState();
 }
 
-class _ArtistsScreenState extends State<ArtistsScreen> {
+class _ArtistListPageState extends State<ArtistListPage> {
   @override
   void initState() {
     super.initState();
+    print('xxxx initState artists_screen xxxxxxxxxxxxxxxxxxxxxxx');
     context.read<MediaCubit>().loadArtists();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Artists')),
-      body: BlocBuilder<MediaCubit, MediaState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const SizedBox();
-          }
-          if (state.error != null) {
-            return Text(state.error.toString());
-          }
+    return BlocBuilder<MediaCubit, MediaState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const SizedBox();
+        }
+        if (state.error != null) {
+          return Text(state.error.toString());
+        }
 
-          return buildListView(state.artists);
-        },
-      ),
+        return buildListView(state.artists);
+      },
     );
   }
 

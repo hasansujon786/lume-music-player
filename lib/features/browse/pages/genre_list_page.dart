@@ -7,14 +7,14 @@ import '../cubit/media_cubit.dart';
 import '../cubit/songs_by_genre_cubit.dart';
 import '../widgets/audio_list_item.dart';
 
-class GenresScreen extends StatefulWidget {
-  const GenresScreen({super.key});
+class GenresListPage extends StatefulWidget {
+  const GenresListPage({super.key});
 
   @override
-  State<GenresScreen> createState() => _GenresScreenState();
+  State<GenresListPage> createState() => _GenresListPageState();
 }
 
-class _GenresScreenState extends State<GenresScreen> {
+class _GenresListPageState extends State<GenresListPage> {
   @override
   void initState() {
     super.initState();
@@ -23,20 +23,17 @@ class _GenresScreenState extends State<GenresScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Genres')),
-      body: BlocBuilder<MediaCubit, MediaState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const SizedBox();
-          }
-          if (state.error != null) {
-            return Text(state.error.toString());
-          }
+    return BlocBuilder<MediaCubit, MediaState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const SizedBox();
+        }
+        if (state.error != null) {
+          return Text(state.error.toString());
+        }
 
-          return buildListView(state.genres);
-        },
-      ),
+        return buildListView(state.genres);
+      },
     );
   }
 

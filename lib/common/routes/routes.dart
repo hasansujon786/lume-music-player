@@ -1,10 +1,7 @@
-export '../../features/browse/screens/albums_screen.dart';
-export '../../features/browse/screens/artists_screen.dart';
-export '../../features/browse/screens/genres_screen.dart';
+export '../../features/browse/screens/browse_screen.dart';
 export '../../features/browse/screens/songs_by_album_screen.dart';
 export '../../features/browse/screens/songs_by_artist_screen.dart';
 export '../../features/browse/screens/songs_by_genre_screen.dart';
-export '../../features/browse/screens/songs_screen.dart';
 export '../../features/home/screens/home_screen.dart';
 export '../../features/player/screens/player_screen.dart';
 export '../../features/player/screens/playlist.dart';
@@ -17,10 +14,7 @@ class Routes {
   static const String player = '/player';
   static const String playlist = '/playlist';
 
-  static const String browseSongs = '/songs';
-  static const String browseArtists = '/artists';
-  static const String browseAlbums = '/albums';
-  static const String browseGenres = '/genres';
+  static const String browse = '/browse';
 
   static const String permissions = '/permissions';
 

@@ -1,0 +1,278 @@
+import 'package:flutter/material.dart';
+
+import '../pages/album_list_page.dart';
+import '../pages/song_list_page.dart';
+import '../pages/genre_list_page.dart';
+import '../pages/artist_list_page.dart';
+
+const titleGap = 12.0;
+
+class BrowseScreenParams {
+  final int initialPageIndex;
+  const BrowseScreenParams({required this.initialPageIndex});
+}
+
+class BrowseScreen extends StatefulWidget {
+  final BrowseScreenParams? params;
+  const BrowseScreen({super.key, this.params});
+
+  @override
+  State<BrowseScreen> createState() => _BrowseScreenState();
+}
+
+class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderStateMixin {
+  final categories = [
+    'genres',
+    'artists',
+    'albums',
+    'songs',
+    'genres',
+    // 'playlists',
+    // middle
+    'artists',
+    'albums',
+    'songs',
+    'genres',
+    // 'playlists',
+  ];
+  final categoryCount = 4;
+  bool zeroIndexCategoryAdded = false;
+  double xOffsetTitle = 0;
+  List<RenderBoxInfo?> allTitleBoxInfo = [];
+  final Map<int, GlobalKey> _itemKeys = {for (int i = 0; i < 10; i++) i: GlobalKey()};
+  late Animation<double> _titleAnimation;
+
+  RenderBoxInfo? getBoxPositon(index) {
+    final key = _itemKeys[index];
+    final ctx = key?.currentContext;
+    if (ctx != null) {
+      final box = ctx.findRenderObject() as RenderBox;
+      final dx = box.localToGlobal(Offset.zero).dx;
+      return RenderBoxInfo(box.size.width, dx);
+    }
+
+    return null;
+  }
+
+  void saveAllTitleBoxPositions(int initialIndex) {
+    final info = getBoxPositon(initialIndex + 1);
+    setState(() => xOffsetTitle = -((info?.dx ?? 0)));
+
+    if (!zeroIndexCategoryAdded) {
+      for (var i = 0; i < categoryCount; i++) {
+        final info = getBoxPositon(i + 1);
+
+        if (info != null) {
+          allTitleBoxInfo.add(info);
+        }
+      }
+
+      zeroIndexCategoryAdded = true;
+    }
+  }
+
+  double xOffset = -1;
+  double screenWidth = 0.0;
+  int currentIndex = -1;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  double xOffsetPercent = 0.0;
+  double xOffsetPercentTemp = 0.0;
+  bool didScrolledHalfway = false;
+  int didScrolledDirection = 0;
+  void _resetScrollState() {
+    didScrolledHalfway = false;
+    didScrolledDirection = 0;
+    xOffsetPercent = 0.0;
+    xOffsetPercentTemp = 0.0;
+  }
+
+  int realIndex(int index) => (index % categoryCount + categoryCount) % categoryCount;
+
+  final List<Widget> items = [
+    ArtistListPage(key: ValueKey('ArtistListPage')),
+    AlbumListPage(key: ValueKey('AlbumListPage')),
+    SongsListPage(key: ValueKey('SongsListPage')),
+    GenresListPage(key: ValueKey('GenresListPage')),
+  ];
+
+  void lazyLoadWidgets() {
+    final widgets = [];
+
+    for (final wid in widgets) {
+      items.add(wid);
+    }
+  }
+
+  @override
+  void initState() {
+    currentIndex = widget.params?.initialPageIndex ?? 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      saveAllTitleBoxPositions(currentIndex);
+      // lazyLoadWidgets();
+    });
+
+    super.initState();
+
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+
+    _controller.addListener(() {
+      // print('_animation ${_animation.value}');
+      setState(() {
+        xOffset = _animation.value;
+        xOffsetTitle = _titleAnimation.value;
+      });
+    });
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed && didScrolledHalfway) {
+        if (didScrolledDirection == -1) {
+          xOffset = screenWidth;
+          currentIndex = realIndex(currentIndex + 1);
+        } else if (didScrolledDirection == 1) {
+          xOffset = -screenWidth;
+          currentIndex = realIndex(currentIndex - 1);
+        }
+
+        // reset offset if the new category is first or last item
+        if (currentIndex == 0) {
+          xOffsetTitle = -(allTitleBoxInfo.first?.dx ?? 0);
+        } else if (currentIndex == categoryCount - 1) {
+          xOffsetTitle = -(allTitleBoxInfo.last?.dx ?? 0);
+        }
+
+        // Slide in new item
+        animateToOffset(0, titleTarget: xOffsetTitle);
+        _resetScrollState();
+      }
+    });
+  }
+
+  void animateToOffset(double target, {double? titleTarget}) {
+    _animation = Tween<double>(
+      begin: xOffset,
+      end: target,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    if (titleTarget != null) {
+      _titleAnimation = Tween<double>(
+        begin: xOffsetTitle,
+        end: titleTarget,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    }
+
+    _controller.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenWidth = MediaQuery.sizeOf(context).width;
+
+    return Scaffold(
+      body: SafeArea(
+        child: GestureDetector(
+          onPanStart: (details) {
+            _resetScrollState();
+            xOffsetPercentTemp = xOffsetTitle;
+          },
+          onPanUpdate: (details) {
+            setState(() {
+              xOffset += details.delta.dx;
+              xOffsetPercent += details.delta.dx / screenWidth;
+
+              final titleWidth = allTitleBoxInfo[currentIndex]?.width ?? 0;
+              xOffsetTitle = xOffsetPercentTemp + (xOffsetPercent * titleWidth);
+
+              // print('xOffsetPercent $xOffsetPercent');
+              // categoryScrollX = -(categoryScrollX.abs() + dx);
+            });
+          },
+          onPanEnd: (details) {
+            // xOffsetPercent = 0.0;
+            final scrolledHalfway = xOffset.abs() >= screenWidth / 2;
+            if (scrolledHalfway) {
+              // Scroll out completely in the direction of the swipe
+              double target = xOffset > 0 ? screenWidth : -screenWidth;
+              double titleTarget = 0.0;
+              didScrolledHalfway = true;
+
+              if (target > 0) {
+                didScrolledDirection = 1;
+                final titleWidth = allTitleBoxInfo[realIndex(currentIndex - 1)]?.width ?? 0;
+                titleTarget = xOffsetPercentTemp + (titleWidth + titleGap); // gap
+              } else {
+                didScrolledDirection = -1;
+                final titleWidth = allTitleBoxInfo[currentIndex]?.width ?? 0;
+                titleTarget = xOffsetPercentTemp - (titleWidth + titleGap); // gap
+              }
+
+              animateToOffset(target, titleTarget: titleTarget);
+            } else {
+              animateToOffset(0, titleTarget: xOffsetPercentTemp);
+              _resetScrollState();
+            }
+          },
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      top: 0,
+                      child: Transform.translate(
+                        offset: Offset(xOffsetTitle, 0),
+                        child: Row(
+                          spacing: titleGap,
+                          children: [
+                            for (var i = 0; i < categories.length; i++)
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  color: Colors.red,
+                                  child: Text(
+                                    ' ${categories[i]}',
+                                    key: _itemKeys[i],
+                                    style: TextStyle(fontSize: 27),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Transform.translate(
+                  offset: Offset(xOffset, 0),
+                  child: IndexedStack(index: currentIndex, children: items),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RenderBoxInfo {
+  final double dx;
+  final double width;
+  const RenderBoxInfo(this.width, this.dx);
+
+  @override
+  String toString() {
+    return 'width $width,dx $dx';
+  }
+}

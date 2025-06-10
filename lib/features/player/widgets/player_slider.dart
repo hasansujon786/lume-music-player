@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/utils/utils.dart';
 import '../cubit/audio_player_cubit.dart';
-
-String formatDuration(Duration? d) {
-  if (d == null) {
-    return '';
-  }
-  final min = d.inMinutes.remainder(60);
-  final sec = d.inSeconds.remainder(60);
-  return "${min.toString().padLeft(2, "0")}:${sec.toString().padLeft(2, "0")}";
-}
 
 double _getSliderValue(
   Duration? position,

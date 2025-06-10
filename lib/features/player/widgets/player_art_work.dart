@@ -5,7 +5,7 @@ import 'package:on_audio_query_forked/on_audio_query.dart';
 import '../cubit/audio_player_cubit.dart';
 import '../models/audio_tag.dart';
 
-double playerArtworkSize = 320;
+double _playerArtworkSize = 320;
 
 class PlayerArtWork extends StatelessWidget {
   const PlayerArtWork({super.key});
@@ -18,9 +18,9 @@ class PlayerArtWork extends StatelessWidget {
         return currentAudioTag == null
             ? buildEmptyArtwork()
             : QueryArtworkWidget(
-                artworkWidth: playerArtworkSize,
-                artworkHeight: playerArtworkSize,
-                size: playerArtworkSize.toInt(),
+                artworkWidth: _playerArtworkSize,
+                artworkHeight: _playerArtworkSize,
+                size: _playerArtworkSize.toInt(),
                 artworkQuality: FilterQuality.high,
                 quality: 100,
                 nullArtworkWidget: buildEmptyArtwork(),
@@ -34,8 +34,8 @@ class PlayerArtWork extends StatelessWidget {
 
   Widget buildEmptyArtwork() {
     return SizedBox(
-      height: playerArtworkSize,
-      width: playerArtworkSize,
+      height: _playerArtworkSize,
+      width: _playerArtworkSize,
       child: Icon(Icons.camera_alt_sharp),
     );
   }

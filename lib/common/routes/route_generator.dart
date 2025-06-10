@@ -15,14 +15,8 @@ class RouteGenerator {
           builder: (context) => Playlist(params: settings.arguments as PlaylistParams),
         );
 
-      case Routes.browseSongs:
-        return MaterialPageRoute(builder: (context) => SongsScreen());
-      case Routes.browseArtists:
-        return MaterialPageRoute(builder: (context) => ArtistsScreen());
-      case Routes.browseAlbums:
-        return MaterialPageRoute(builder: (context) => AlbumsScreen());
-      case Routes.browseGenres:
-        return MaterialPageRoute(builder: (context) => GenresScreen());
+      case Routes.browse:
+        return MaterialPageRoute(builder: (context) => BrowseScreen(params: settings.arguments as BrowseScreenParams?));
 
       case Routes.songsByArtist:
         return MaterialPageRoute(
