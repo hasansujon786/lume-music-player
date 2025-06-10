@@ -19,7 +19,7 @@ class CollectionItem extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             title,
-            style: TextStyle(fontSize: 32, color: Colors.grey.shade900),
+            style: TextStyle(fontSize: 34, color: Colors.grey.shade900),
             textAlign: TextAlign.left,
           ),
         ),

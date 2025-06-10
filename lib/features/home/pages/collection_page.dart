@@ -38,7 +38,7 @@ class CollectionPage extends StatelessWidget {
         //   'playlists',
         //   onPressed: () => Navigator.pushNamed(context, Routes.browseGenres),
         // ),
-        SizedBox(height: separate),
+        // SizedBox(height: separate),
         // CollectionItem(
         //   'Test',
         //   onPressed: () => Navigator.pushNamed(context, '/test', arguments: BrowseScreenParams(initialPageIndex: 1)),

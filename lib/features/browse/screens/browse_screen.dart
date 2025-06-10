@@ -5,7 +5,10 @@ import '../pages/song_list_page.dart';
 import '../pages/genre_list_page.dart';
 import '../pages/artist_list_page.dart';
 
-const titleGap = 12.0;
+const titleGap = 0.0;
+const titleRowHeight = 60.0;
+final titleColor = Colors.grey.shade500;
+final titleActiveColor = Colors.black;
 
 class BrowseScreenParams {
   final int initialPageIndex;
@@ -38,6 +41,8 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
   final categoryCount = 4;
   bool zeroIndexCategoryAdded = false;
   double xOffsetTitle = 0;
+  double? lastTitleXOffset;
+  double? firstTitleXOffset;
   List<RenderBoxInfo?> allTitleBoxInfo = [];
   final Map<int, GlobalKey> _itemKeys = {for (int i = 0; i < 10; i++) i: GlobalKey()};
   late Animation<double> _titleAnimation;
@@ -56,7 +61,9 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
 
   void saveAllTitleBoxPositions(int initialIndex) {
     final info = getBoxPositon(initialIndex + 1);
-    setState(() => xOffsetTitle = -((info?.dx ?? 0)));
+    setState(() {
+      xOffsetTitle = -((info?.dx ?? 0) - safePaddingLeft);
+    });
 
     if (!zeroIndexCategoryAdded) {
       for (var i = 0; i < categoryCount; i++) {
@@ -66,6 +73,8 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
           allTitleBoxInfo.add(info);
         }
       }
+      firstTitleXOffset = (allTitleBoxInfo.first?.dx ?? 0) - safePaddingLeft;
+      lastTitleXOffset = (allTitleBoxInfo.last?.dx ?? 0) - safePaddingLeft;
 
       zeroIndexCategoryAdded = true;
     }
@@ -73,6 +82,7 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
 
   double xOffset = -1;
   double screenWidth = 0.0;
+  double safePaddingLeft = 0.0;
   int currentIndex = -1;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -137,9 +147,9 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
 
         // reset offset if the new category is first or last item
         if (currentIndex == 0) {
-          xOffsetTitle = -(allTitleBoxInfo.first?.dx ?? 0);
+          xOffsetTitle = -(firstTitleXOffset ?? 0);
         } else if (currentIndex == categoryCount - 1) {
-          xOffsetTitle = -(allTitleBoxInfo.last?.dx ?? 0);
+          xOffsetTitle = -(lastTitleXOffset ?? 0);
         }
 
         // Slide in new item
@@ -174,6 +184,9 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.sizeOf(context).width;
+    safePaddingLeft = MediaQuery.paddingOf(context).left;
+    safePaddingLeft = MediaQuery.paddingOf(context).left;
+    final bgColor = Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
       body: SafeArea(
@@ -222,7 +235,8 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
           child: Column(
             children: [
               SizedBox(
-                height: 50,
+                height: titleRowHeight,
+                width: screenWidth,
                 child: Stack(
                   children: [
                     Positioned(
@@ -236,12 +250,12 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
                             for (var i = 0; i < categories.length; i++)
                               GestureDetector(
                                 onTap: () {},
-                                child: Container(
-                                  color: Colors.red,
-                                  child: Text(
-                                    ' ${categories[i]}',
-                                    key: _itemKeys[i],
-                                    style: TextStyle(fontSize: 27),
+                                child: Text(
+                                  ' ${categories[i]}',
+                                  key: _itemKeys[i],
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    color: (currentIndex + 1 == i) ? titleActiveColor : titleColor,
                                   ),
                                 ),
                               ),
@@ -249,6 +263,12 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
                         ),
                       ),
                     ),
+                    if (lastTitleXOffset != null)
+                      Positioned(
+                        top: 0,
+                        left: (lastTitleXOffset ?? 0) + 2,
+                        child: Container(height: titleRowHeight, width: screenWidth, color: bgColor),
+                      ),
                   ],
                 ),
               ),

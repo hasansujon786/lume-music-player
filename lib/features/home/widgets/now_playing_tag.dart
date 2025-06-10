@@ -55,12 +55,15 @@ class NowPlayingTag extends StatelessWidget {
                                 selector: (state) => (state.isPlaying, state.position),
                                 builder: (context, state) {
                                   final (isPlaying, position) = state;
-                                  return Text(
-                                    isPlaying ? formatDuration(position) : 'Paused',
-                                    style: TextStyle(fontSize: 26, color: Colors.white),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  );
+                                  return isPlaying
+                                      ? Text(
+                                          formatDuration(position),
+                                          style: TextStyle(fontSize: 28, color: Colors.white),
+                                        )
+                                      : Text(
+                                          'Paused',
+                                          style: TextStyle(fontSize: 22, color: Colors.white),
+                                        );
                                 },
                               ),
                               Text(
