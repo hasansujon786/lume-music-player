@@ -45,7 +45,11 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
   double? firstTitleXOffset;
   List<RenderBoxInfo?> allTitleBoxInfo = [];
   final Map<int, GlobalKey> _itemKeys = {for (int i = 0; i < 10; i++) i: GlobalKey()};
-  late Animation<double> _titleAnimation;
+  late Animation<double> _titleOffsetXAnimation;
+  late final Animation<Color?> _colorAnimation = ColorTween(
+    begin: titleColor,
+    end: titleActiveColor,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
   RenderBoxInfo? getBoxPositon(index) {
     final key = _itemKeys[index];
@@ -84,8 +88,11 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
   double screenWidth = 0.0;
   double safePaddingLeft = 0.0;
   int currentIndex = -1;
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: Duration(milliseconds: 300),
+  );
+  late Animation<double> _pageOffsetXanimation;
 
   double xOffsetPercent = 0.0;
   double xOffsetPercentTemp = 0.0;
@@ -125,13 +132,11 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
 
     super.initState();
 
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-
     _controller.addListener(() {
       // print('_animation ${_animation.value}');
       setState(() {
-        xOffset = _animation.value;
-        xOffsetTitle = _titleAnimation.value;
+        xOffset = _pageOffsetXanimation.value;
+        xOffsetTitle = _titleOffsetXAnimation.value;
       });
     });
 
@@ -160,13 +165,13 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
   }
 
   void animateToOffset(double target, {double? titleTarget}) {
-    _animation = Tween<double>(
+    _pageOffsetXanimation = Tween<double>(
       begin: xOffset,
       end: target,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     if (titleTarget != null) {
-      _titleAnimation = Tween<double>(
+      _titleOffsetXAnimation = Tween<double>(
         begin: xOffsetTitle,
         end: titleTarget,
       ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
@@ -208,9 +213,11 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
             });
           },
           onPanEnd: (details) {
-            // xOffsetPercent = 0.0;
-            final scrolledHalfway = xOffset.abs() >= screenWidth / 2;
-            if (scrolledHalfway) {
+            final velocityX = details.velocity.pixelsPerSecond.dx;
+            final scrolledFarEnough = xOffset.abs() >= screenWidth / 2;
+            final swipedFastEnough = velocityX.abs() > 400; // Threshold velocity
+
+            if (scrolledFarEnough || swipedFastEnough) {
               // Scroll out completely in the direction of the swipe
               double target = xOffset > 0 ? screenWidth : -screenWidth;
               double titleTarget = 0.0;
@@ -255,7 +262,16 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
                                   key: _itemKeys[i],
                                   style: TextStyle(
                                     fontSize: 40,
-                                    color: (currentIndex + 1 == i) ? titleActiveColor : titleColor,
+                                    color: (currentIndex + 1 == i)
+                                        ? _colorAnimation.isAnimating
+                                              ? _colorAnimation.value
+                                              : titleActiveColor
+                                        : (i < currentIndex + 1)
+                                        ? titleColor
+                                        : (i > currentIndex + 1) &&
+                                              (i <= currentIndex + categoryCount)
+                                        ? titleColor
+                                        : Colors.transparent,
                                   ),
                                 ),
                               ),
@@ -263,12 +279,16 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
                         ),
                       ),
                     ),
-                    if (lastTitleXOffset != null)
-                      Positioned(
-                        top: 0,
-                        left: (lastTitleXOffset ?? 0) + 2,
-                        child: Container(height: titleRowHeight, width: screenWidth, color: bgColor),
-                      ),
+                    // if (lastTitleXOffset != null)
+                    //   Positioned(
+                    //     top: 0,
+                    //     left: (lastTitleXOffset ?? 0) + 2,
+                    //     child: Container(
+                    //       height: titleRowHeight,
+                    //       width: screenWidth,
+                    //       color: bgColor,
+                    //     ),
+                    //   ),
                   ],
                 ),
               ),
