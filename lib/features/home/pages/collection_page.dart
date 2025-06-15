@@ -35,14 +35,10 @@ class CollectionPage extends StatelessWidget {
         CollectionItem('genres', onPressed: () => nav(context, 3)),
         SizedBox(height: separate),
         // CollectionItem(
-        //   'playlists',
-        //   onPressed: () => Navigator.pushNamed(context, Routes.browseGenres),
+        //   'permission',
+        //   onPressed: () => Navigator.pushNamed(context, Routes.permissions),
         // ),
         // SizedBox(height: separate),
-        // CollectionItem(
-        //   'Test',
-        //   onPressed: () => Navigator.pushNamed(context, '/test', arguments: BrowseScreenParams(initialPageIndex: 1)),
-        // ),
       ],
     );
   }

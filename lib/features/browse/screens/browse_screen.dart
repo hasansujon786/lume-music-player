@@ -240,7 +240,12 @@ class _BrowseScreenState extends State<BrowseScreen> with SingleTickerProviderSt
             }
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text('MUSIC', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),)
+              ),
               SizedBox(
                 height: titleRowHeight,
                 width: screenWidth,

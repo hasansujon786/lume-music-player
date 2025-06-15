@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/widgets/no_access_model.dart';
 import '../../browse/cubit/media_cubit.dart';
 import '../pages/collection_page.dart';
+import '../pages/history_page.dart';
+import '../pages/new_songs_page.dart';
 import '../widgets/top_banner.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -67,23 +69,10 @@ class _MainPageViewState extends State<MainPageView> {
           top: 80,
           child: PageView(
             controller: _pageController,
-            children: [
-              CollectionPage(),
-              _buildPage(Colors.green.shade400, 'Page 2'),
-              _buildPage(Colors.red.shade400, 'Page 3'),
-            ],
+            children: [CollectionPage(), HistoryPage(), NewSongsPage()],
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildPage(Color color, String title) {
-    return Container(
-      color: color,
-      child: Center(
-        child: Text(title, style: TextStyle(fontSize: 36, color: Colors.white)),
-      ),
     );
   }
 }
