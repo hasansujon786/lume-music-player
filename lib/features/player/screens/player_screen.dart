@@ -21,10 +21,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
           child: Column(
             children: [
               SizedBox(height: 24),
-              PlayerArtWork(),
-              AudioTitle(),
-              PlayerSlider(),
-              PlayerMainControlls(),
             ],
           ),
         ),

@@ -12,7 +12,7 @@ class CollectionItem extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 6),
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
         ),
         child: Align(

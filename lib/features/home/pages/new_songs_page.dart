@@ -13,7 +13,10 @@ class NewSongsPage extends StatelessWidget {
       padding: const EdgeInsets.only(right: 12),
       children: <Widget>[
         SizedBox(height: 16),
-        PageTitle('New'),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: PageTitle('New'),
+        ),
         SizedBox(height: separate),
       ],
     );

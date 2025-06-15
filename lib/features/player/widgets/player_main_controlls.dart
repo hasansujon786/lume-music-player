@@ -1,94 +1,69 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
 
-import '../../../common/routes/routes.dart';
 import '../cubit/audio_player_cubit.dart';
 
 class PlayerMainControlls extends StatelessWidget {
-  const PlayerMainControlls({super.key});
+  final double width;
+  const PlayerMainControlls({super.key, required this.width});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
-      builder: (context, state) {
-        return Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  iconSize: 32,
-                  isSelected: false,
-                  icon: buildLoopIcon(state.loopMode),
-                  onPressed: () => context.read<AudioPlayerCubit>().toggleRepeatMode(),
-                ),
-                IconButton(
-                  iconSize: 32,
-                  isSelected: false,
-                  icon: Icon(Icons.skip_previous_rounded),
-                  onPressed: () => context.read<AudioPlayerCubit>().prev(),
-                ),
-                IconButton.filled(
-                  iconSize: 32,
-                  isSelected: state.isPlaying,
-                  selectedIcon: Icon(Icons.pause_rounded),
-                  icon: Icon(Icons.play_arrow_rounded),
-                  onPressed: () => context.read<AudioPlayerCubit>().toggle(),
-                  padding: EdgeInsetsGeometry.all(12),
-                ),
-                IconButton(
-                  iconSize: 32,
-                  isSelected: false,
-                  icon: Icon(Icons.skip_next_rounded),
-                  onPressed: () => context.read<AudioPlayerCubit>().next(),
-                ),
-                IconButton(
-                  iconSize: 32,
-                  isSelected: false,
-                  icon: Icon(
-                    state.shuffleModeEnabled ? Icons.shuffle_on_rounded : Icons.shuffle_rounded,
-                  ),
-                  onPressed: () => context.read<AudioPlayerCubit>().toggleShuffle(),
-                ),
-              ],
+    return SizedBox(
+      width: width,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: AlignmentDirectional.center,
+        children: [
+          Positioned(
+            left: -8,
+            child: IconButton(
+              iconSize: 24,
+              icon: IconWithBorder(Icon(FluentIcons.rewind_24_filled)),
+              onPressed: () => context.read<AudioPlayerCubit>().prev(),
             ),
-            SizedBox(height: 40),
-            Column(
-              children: [
-                IconButton(
-                  iconSize: 32,
-                  isSelected: false,
-                  icon: Icon(Icons.playlist_play_rounded),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      Routes.playlist,
-                      arguments: PlaylistParams(currentIndex: state.currentSequenceIndex),
-                    );
-                  },
-                ),
-                // TextButton(
-                //   onPressed: () {
-                //     // context.read<AudioPlayerCubit>().seek(state.duration - Duration(seconds: 5));
-                //   },
-                //   child: Text('5s to end'),
-                // ),
-              ],
+          ),
+          BlocSelector<AudioPlayerCubit, AudioPlayerState, bool>(
+            selector: (state) => state.isPlaying,
+            builder: (context, isPlaying) {
+              return IconButton(
+                iconSize: 24,
+                icon: isPlaying
+                    ? IconWithBorder(Icon(Icons.pause_rounded, size: 30), padding: 7)
+                    : IconWithBorder(Icon(FluentIcons.play_24_filled)),
+                onPressed: () => context.read<AudioPlayerCubit>().toggle(),
+              );
+            },
+          ),
+          Positioned(
+            right: -8,
+            child: IconButton(
+              iconSize: 24,
+              icon: IconWithBorder(Icon(FluentIcons.fast_forward_24_filled)),
+              onPressed: () => context.read<AudioPlayerCubit>().next(),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
+}
 
-  Widget buildLoopIcon(LoopMode mode) {
-    switch (mode) {
-      case LoopMode.off:
-        return Icon(Icons.report_off_outlined);
-      case LoopMode.one:
-        return Icon(Icons.repeat_one_rounded);
-      default:
-        return Icon(Icons.repeat_rounded);
-    }
+class IconWithBorder extends StatelessWidget {
+  final Widget icon;
+  final double padding;
+  const IconWithBorder(this.icon, {super.key, this.padding = 10});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsetsGeometry.all(padding),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: IconTheme.of(context).color ?? Colors.black, width: 3),
+      ),
+      child: icon,
+    );
   }
 }

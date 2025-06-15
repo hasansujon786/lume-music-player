@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/widgets/no_access_model.dart';
 import '../../browse/cubit/media_cubit.dart';
+import '../../player/cubit/audio_player_cubit.dart';
+import '../../player/models/audio_tag.dart';
 import '../pages/collection_page.dart';
 import '../pages/history_page.dart';
 import '../pages/new_songs_page.dart';
+import '../pages/now_playing_page.dart';
 import '../widgets/top_banner.dart';
+
+const double _peekAmount = 52;
 
 class HomeScreen extends StatelessWidget {
   final String title;
@@ -15,8 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.sizeOf(context).width;
-    final double peekAmount = 24;
-    final double viewportFraction = (screenWidth - peekAmount) / screenWidth;
+    final double viewportFraction = (screenWidth - _peekAmount) / screenWidth;
 
     return Scaffold(
       body: SafeArea(
@@ -29,6 +33,7 @@ class HomeScreen extends StatelessWidget {
             if (!hasPermission) {
               return NoAccessModel();
             }
+            // return SizedBox();
             return MainPageView(viewportFraction: viewportFraction);
           },
         ),
@@ -67,10 +72,28 @@ class _MainPageViewState extends State<MainPageView> {
         TopBanner(pageController: _pageController),
         Positioned.fill(
           top: 80,
-          child: PageView(
-            controller: _pageController,
-            children: [CollectionPage(), HistoryPage(), NewSongsPage()],
+          left: -16,
+          bottom: 22,
+          child: BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
+            selector: (state) => state.currentAudioTag,
+            builder: (context, currentTrack) {
+              return PageView(
+                controller: _pageController,
+                children: [
+                  if (currentTrack != null) NowPlayingPage(),
+                  CollectionPage(),
+                  HistoryPage(),
+                  NewSongsPage(),
+                ],
+              );
+            },
           ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(width: double.infinity, height: 22, color: Colors.grey.shade300),
         ),
       ],
     );

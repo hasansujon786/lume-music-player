@@ -19,7 +19,8 @@ double _getSliderValue(
 }
 
 class PlayerSlider extends StatefulWidget {
-  const PlayerSlider({super.key});
+  final double width;
+  const PlayerSlider({super.key, required this.width});
 
   @override
   State<PlayerSlider> createState() => _PlayerSliderState();
@@ -33,36 +34,36 @@ class _PlayerSliderState extends State<PlayerSlider> {
   Widget build(BuildContext context) {
     return BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
       builder: (context, state) {
-        return Column(
-          children: <Widget>[
-            Slider(
-              padding: EdgeInsetsGeometry.symmetric(vertical: 4),
-              min: 0.0,
-              max: state.duration?.inSeconds.toDouble() ?? 1,
-              value: _getSliderValue(state.position, state.duration, usingSlider, sliderValue),
-              onChanged: (value) {
-                setState(() => sliderValue = Duration(seconds: value.toInt()));
-              },
-              onChangeStart: (value) {
-                sliderValue = state.position!;
-                usingSlider = true;
-              },
-              onChangeEnd: (value) {
-                context.read<AudioPlayerCubit>().seek(Duration(seconds: value.toInt()));
-                usingSlider = false;
-                sliderValue = Duration.zero;
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(formatDuration(usingSlider ? sliderValue : state.position)),
-                SizedBox(width: 12),
-                Text(formatDuration(state.duration)),
-              ],
-            ),
-            // SizedBox(height: 100),
-          ],
+        return SizedBox(
+          width: widget.width,
+          child: Row(
+            spacing: 16,
+            children: <Widget>[
+              Text(formatDuration(usingSlider ? sliderValue : state.position)),
+              Expanded(
+                child: Slider(
+                  padding: EdgeInsetsGeometry.symmetric(vertical: 4),
+                  min: 0.0,
+                  max: state.duration?.inSeconds.toDouble() ?? 1,
+                  value: _getSliderValue(state.position, state.duration, usingSlider, sliderValue),
+                  onChanged: (value) {
+                    setState(() => sliderValue = Duration(seconds: value.toInt()));
+                  },
+                  onChangeStart: (value) {
+                    sliderValue = state.position!;
+                    usingSlider = true;
+                  },
+                  onChangeEnd: (value) {
+                    context.read<AudioPlayerCubit>().seek(Duration(seconds: value.toInt()));
+                    usingSlider = false;
+                    sliderValue = Duration.zero;
+                  },
+                ),
+              ),
+              Text(formatDuration(state.duration)),
+              // SizedBox(height: 100),
+            ],
+          ),
         );
       },
     );

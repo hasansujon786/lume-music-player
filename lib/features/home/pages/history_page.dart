@@ -13,7 +13,10 @@ class HistoryPage extends StatelessWidget {
       padding: const EdgeInsets.only(right: 12),
       children: <Widget>[
         SizedBox(height: 16),
-        PageTitle('History'),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: PageTitle('History'),
+        ),
         SizedBox(height: separate),
       ],
     );

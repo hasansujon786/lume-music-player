@@ -5,38 +5,40 @@ import 'package:on_audio_query_forked/on_audio_query.dart';
 import '../cubit/audio_player_cubit.dart';
 import '../models/audio_tag.dart';
 
-double _playerArtworkSize = 320;
-
 class PlayerArtWork extends StatelessWidget {
-  const PlayerArtWork({super.key});
+  final double width;
+  const PlayerArtWork({super.key, required this.width});
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
-      selector: (state) => state.currentAudioTag,
-      builder: (context, currentAudioTag) {
-        return currentAudioTag == null
-            ? buildEmptyArtwork()
-            : QueryArtworkWidget(
-                artworkWidth: _playerArtworkSize,
-                artworkHeight: _playerArtworkSize,
-                size: _playerArtworkSize.toInt(),
-                artworkQuality: FilterQuality.high,
-                quality: 100,
-                nullArtworkWidget: buildEmptyArtwork(),
-                artworkClipBehavior: Clip.none,
-                id: currentAudioTag.id,
-                type: ArtworkType.AUDIO,
-              );
-      },
+    return SizedBox.square(
+      dimension: width,
+      child: BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
+        selector: (state) => state.currentAudioTag,
+        builder: (context, currentAudioTag) {
+          // return Container(color: Colors.red.shade300);
+          return currentAudioTag == null
+              ? buildEmptyArtwork()
+              : QueryArtworkWidget(
+                  artworkWidth: width,
+                  artworkHeight: width,
+                  size: width.toInt(),
+                  artworkQuality: FilterQuality.high,
+                  quality: 100,
+                  nullArtworkWidget: buildEmptyArtwork(),
+                  artworkClipBehavior: Clip.none,
+                  id: currentAudioTag.id,
+                  type: ArtworkType.AUDIO,
+                );
+        },
+      ),
     );
   }
 
   Widget buildEmptyArtwork() {
-    return SizedBox(
-      height: _playerArtworkSize,
-      width: _playerArtworkSize,
-      child: Icon(Icons.camera_alt_sharp),
+    return Container(
+      color: Colors.grey.shade300,
+      child: Center(child: Icon(Icons.camera_alt_sharp)),
     );
   }
 }

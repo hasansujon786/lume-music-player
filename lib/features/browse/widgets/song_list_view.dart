@@ -29,7 +29,8 @@ class SongListView extends StatelessWidget {
               shouldPlay: true,
               index: index,
             );
-            Navigator.of(context).pushNamed(Routes.player);
+            // Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.landing);
           },
         );
       },
