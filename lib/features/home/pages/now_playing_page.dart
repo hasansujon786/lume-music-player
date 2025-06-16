@@ -14,11 +14,10 @@ class NowPlayingPage extends StatelessWidget {
     final double screenWidth = MediaQuery.sizeOf(context).width;
     double playerWidth = screenWidth * 0.70;
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(left: 16),
       child: Column(
         spacing: 8,
-        // mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 16),

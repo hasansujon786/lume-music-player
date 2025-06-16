@@ -10,13 +10,10 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.only(right: 8, left: 16),
       children: <Widget>[
         SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: PageTitle('History'),
-        ),
+        PageTitle('History'),
         SizedBox(height: separate),
       ],
     );

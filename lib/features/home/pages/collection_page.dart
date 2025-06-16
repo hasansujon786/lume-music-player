@@ -20,12 +20,10 @@ class CollectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.only(left: 8),
       children: <Widget>[
         SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: PageTitle('collection'),
-        ),
+        Padding(padding: const EdgeInsets.only(left: 8), child: PageTitle('collection')),
         CollectionItem('artists', onPressed: () => nav(context, 0)),
         SizedBox(height: separate),
         CollectionItem('albums', onPressed: () => nav(context, 1)),

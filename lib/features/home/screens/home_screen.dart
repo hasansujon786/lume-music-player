@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,13 +6,12 @@ import '../../../common/widgets/no_access_model.dart';
 import '../../browse/cubit/media_cubit.dart';
 import '../../player/cubit/audio_player_cubit.dart';
 import '../../player/models/audio_tag.dart';
+import '../notifires/scroll_notifire.dart';
 import '../pages/collection_page.dart';
 import '../pages/history_page.dart';
 import '../pages/new_songs_page.dart';
 import '../pages/now_playing_page.dart';
 import '../widgets/top_banner.dart';
-
-const double _peekAmount = 52;
 
 class HomeScreen extends StatelessWidget {
   final String title;
@@ -19,9 +19,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    final double viewportFraction = (screenWidth - _peekAmount) / screenWidth;
-
     return Scaffold(
       body: SafeArea(
         child: BlocSelector<MediaCubit, MediaState, bool?>(
@@ -34,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               return NoAccessModel();
             }
             // return SizedBox();
-            return MainPageView(viewportFraction: viewportFraction);
+            return MainPageView();
           },
         ),
       ),
@@ -43,43 +40,48 @@ class HomeScreen extends StatelessWidget {
 }
 
 class MainPageView extends StatefulWidget {
-  final double viewportFraction;
-  const MainPageView({super.key, required this.viewportFraction});
+  const MainPageView({super.key});
 
   @override
   State<MainPageView> createState() => _MainPageViewState();
 }
 
 class _MainPageViewState extends State<MainPageView> {
-  late final PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(viewportFraction: widget.viewportFraction);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  // Scroll positon
+  double? _baseOffset;
 
   @override
   Widget build(BuildContext context) {
+    const double peekAmount = 32;
+    final size = MediaQuery.sizeOf(context);
+    final double screenWidth = size.width;
+    final double viewportFraction = (screenWidth - peekAmount) / screenWidth;
+
     return Stack(
       children: [
-        TopBanner(pageController: _pageController),
+        TopBanner(),
         Positioned.fill(
           top: 80,
-          left: -16,
           bottom: 22,
           child: BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
             selector: (state) => state.currentAudioTag,
             builder: (context, currentTrack) {
-              return PageView(
-                controller: _pageController,
-                children: [
+              return CarouselSlider(
+                options: CarouselOptions(
+                  height: size.height,
+                  viewportFraction: viewportFraction,
+                  enableInfiniteScroll: false, // loop
+                  enlargeCenterPage: false, // aligns left
+                  padEnds: false, // left-align first item
+                  scrollPhysics: const PageScrollPhysics(),
+                  onScrolled: (val) {
+                    if (val == null) return;
+                    _baseOffset ??= val;
+                    scrollOffsetNotifier.value = val;
+                  },
+                ),
+
+                items: [
                   if (currentTrack != null) NowPlayingPage(),
                   CollectionPage(),
                   HistoryPage(),
