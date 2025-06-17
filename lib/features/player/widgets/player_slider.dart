@@ -1,71 +1,42 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/utils/utils.dart';
 import '../cubit/audio_player_cubit.dart';
 
-double _getSliderValue(
-  Duration? position,
-  Duration? duration,
-  bool usingSlider,
-  Duration sliderValue,
-) {
-  if (usingSlider) {
-    return sliderValue.inSeconds.toDouble();
-  }
-  return position != null && duration != null
-      ? position.inSeconds.clamp(0, duration.inSeconds).toDouble()
-      : 0.0;
-}
-
-class PlayerSlider extends StatefulWidget {
+class PlayerSlider extends StatelessWidget {
   final double width;
   const PlayerSlider({super.key, required this.width});
 
   @override
-  State<PlayerSlider> createState() => _PlayerSliderState();
-}
-
-class _PlayerSliderState extends State<PlayerSlider> {
-  var usingSlider = false;
-  var sliderValue = Duration.zero;
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
-      builder: (context, state) {
-        return SizedBox(
-          width: widget.width,
-          child: Row(
-            spacing: 16,
-            children: <Widget>[
-              Text(formatDuration(usingSlider ? sliderValue : state.position)),
-              Expanded(
-                child: Slider(
-                  padding: EdgeInsetsGeometry.symmetric(vertical: 4),
-                  min: 0.0,
-                  max: state.duration?.inSeconds.toDouble() ?? 1,
-                  value: _getSliderValue(state.position, state.duration, usingSlider, sliderValue),
-                  onChanged: (value) {
-                    setState(() => sliderValue = Duration(seconds: value.toInt()));
-                  },
-                  onChangeStart: (value) {
-                    sliderValue = state.position!;
-                    usingSlider = true;
-                  },
-                  onChangeEnd: (value) {
-                    context.read<AudioPlayerCubit>().seek(Duration(seconds: value.toInt()));
-                    usingSlider = false;
-                    sliderValue = Duration.zero;
-                  },
-                ),
-              ),
-              Text(formatDuration(state.duration)),
-              // SizedBox(height: 100),
-            ],
-          ),
-        );
-      },
+    return SizedBox(
+      width: width,
+      child: BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
+        builder: (context, state) {
+          Duration? position = state.position;
+          Duration? totalDuration = state.duration;
+
+          return ProgressBar(
+            progress: position ?? Duration.zero,
+            total: totalDuration ?? Duration.zero,
+            onSeek: (position) {
+              context.read<AudioPlayerCubit>().seek(position);
+            },
+            // Customize the appearance of the progress bar
+            barHeight: 5,
+            thumbRadius: 2.5,
+            thumbGlowRadius: 5,
+            timeLabelLocation: TimeLabelLocation.sides,
+            timeLabelPadding: 0,
+            timeLabelTextStyle: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+            ),
+          );
+        },
+      ),
     );
   }
 }
