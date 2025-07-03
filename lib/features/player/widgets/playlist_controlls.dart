@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../common/routes/routes.dart';
+import '../../../common/theme/pallete.dart';
 import '../cubit/audio_player_cubit.dart';
 
 class PlaylistControlls extends StatelessWidget {
@@ -11,6 +12,9 @@ class PlaylistControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconActiveColor = IconTheme.of(context).color;
+    final iconDisableColor = Pallete.iconDisabled;
+
     return BlocSelector<AudioPlayerCubit, AudioPlayerState, (LoopMode, bool)>(
       selector: (state) => (state.loopMode, state.shuffleModeEnabled),
       builder: (context, state) {
@@ -28,7 +32,7 @@ class PlaylistControlls extends StatelessWidget {
                   iconSize: 24,
                   icon: Icon(
                     Icons.shuffle_rounded,
-                    color: shuffleModeEnabled ? Colors.black : Colors.grey.shade500,
+                    color: shuffleModeEnabled ? iconActiveColor : iconDisableColor,
                   ),
                   onPressed: () => context.read<AudioPlayerCubit>().toggleShuffle(),
                 ),
@@ -39,7 +43,7 @@ class PlaylistControlls extends StatelessWidget {
                 child: IconButton(
                   iconSize: 24,
                   isSelected: false,
-                  icon: buildLoopIcon(loopMode),
+                  icon: buildLoopIcon(loopMode, iconDisableColor, iconActiveColor),
                   onPressed: () => context.read<AudioPlayerCubit>().toggleRepeatMode(),
                 ),
               ),
@@ -69,14 +73,14 @@ class PlaylistControlls extends StatelessWidget {
     );
   }
 
-  Widget buildLoopIcon(LoopMode mode) {
+  Widget buildLoopIcon(LoopMode mode, Color color, Color? activeColor) {
     switch (mode) {
       case LoopMode.off:
-        return Icon(Icons.repeat_rounded, color: Colors.grey.shade500);
+        return Icon(Icons.repeat_rounded, color: color);
       case LoopMode.one:
-        return Icon(Icons.repeat_one_rounded, color: Colors.black);
+        return Icon(Icons.repeat_one_rounded, color: activeColor);
       default:
-        return Icon(Icons.repeat_rounded, color: Colors.black);
+        return Icon(Icons.repeat_rounded, color: activeColor);
     }
   }
 }

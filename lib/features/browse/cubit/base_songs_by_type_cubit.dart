@@ -13,20 +13,23 @@ abstract class BaseSongsBytypeCubit<T> extends Cubit<T> {
   T buildLoadedState(List<SongModel> songs);
   T buildErrorState(String message);
 
-  Future<void> loadSongs(int id) async {
+  Future<List<SongModel>> loadSongs(int id) async {
     emit(buildLoadingState());
 
     try {
       if (_cache.containsKey(id)) {
+        final songs = _cache[id]!;
         emit(buildLoadedState(_cache[id]!));
-        return;
+        return songs;
       }
 
       final songs = await audioQuery.queryAudiosFrom(queryType, id);
       _cache[id] = songs;
       emit(buildLoadedState(songs));
+      return songs;
     } catch (e) {
       emit(buildErrorState('Failed to load songs: $e'));
+      return [];
     }
   }
 }

@@ -19,7 +19,7 @@ class PlayerMainControlls extends StatelessWidget {
           Positioned(
             left: -8,
             child: IconButton(
-              iconSize: 24,
+              iconSize: 22,
               icon: IconWithBorder(Icon(FluentIcons.rewind_24_filled)),
               onPressed: () => context.read<AudioPlayerCubit>().prev(),
             ),
@@ -28,9 +28,9 @@ class PlayerMainControlls extends StatelessWidget {
             selector: (state) => state.isPlaying,
             builder: (context, isPlaying) {
               return IconButton(
-                iconSize: 24,
+                iconSize: 22,
                 icon: isPlaying
-                    ? IconWithBorder(Icon(Icons.pause_rounded, size: 30), padding: 7)
+                    ? IconWithBorder(Icon(Icons.pause_rounded, size: 30), padding: 6)
                     : IconWithBorder(Icon(FluentIcons.play_24_filled)),
                 onPressed: () => context.read<AudioPlayerCubit>().toggle(),
               );
@@ -39,7 +39,7 @@ class PlayerMainControlls extends StatelessWidget {
           Positioned(
             right: -8,
             child: IconButton(
-              iconSize: 24,
+              iconSize: 22,
               icon: IconWithBorder(Icon(FluentIcons.fast_forward_24_filled)),
               onPressed: () => context.read<AudioPlayerCubit>().next(),
             ),
@@ -61,7 +61,7 @@ class IconWithBorder extends StatelessWidget {
       padding: EdgeInsetsGeometry.all(padding),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: IconTheme.of(context).color ?? Colors.black, width: 3),
+        border: Border.all(color: IconTheme.of(context).color ?? Colors.black, width: 2),
       ),
       child: icon,
     );

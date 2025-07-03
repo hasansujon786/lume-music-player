@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:on_audio_query_forked/on_audio_query.dart';
+
+class ArtWork extends StatelessWidget {
+  final double dimention;
+  final double iconSize;
+  final int? quality;
+  final int? id;
+  const ArtWork({
+    super.key,
+    this.dimention = 60,
+    this.id,
+    this.quality,
+    this.iconSize = 32,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: dimention,
+      child: id == null
+          ? buildEmptyArtwork()
+          : QueryArtworkWidget(
+              artworkWidth: dimention,
+              artworkHeight: dimention,
+              size: quality ?? dimention.toInt(), // quality
+              artworkQuality: FilterQuality.high,
+              quality: 100,
+              nullArtworkWidget: buildEmptyArtwork(),
+              artworkClipBehavior: Clip.none,
+              id: id!,
+              type: ArtworkType.AUDIO,
+            ),
+    );
+  }
+
+  Widget buildEmptyArtwork() {
+    return Container(
+      color: Colors.grey.shade300,
+      child: Center(
+        child: Icon(Icons.headphones_outlined, size: iconSize, color: Colors.grey.shade50),
+      ),
+    );
+  }
+}

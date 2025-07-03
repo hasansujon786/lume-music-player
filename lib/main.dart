@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'common/routes/route_generator.dart';
 import 'common/routes/routes.dart';
+import 'common/theme/theme.dart';
 import 'features/browse/cubit/media_cubit.dart';
 import 'features/browse/cubit/songs_by_album_cubit.dart';
 import 'features/browse/cubit/songs_by_artist_cubit.dart';
@@ -31,10 +32,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Lume music player',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
-          fontFamily: 'SegoeUI'
-        ),
+        theme: AppTheme.light,
         onGenerateRoute: RouteGenerator.generateRoute,
         initialRoute: Routes.landing,
       ),

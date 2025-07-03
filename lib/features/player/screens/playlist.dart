@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../browse/widgets/audio_list_item.dart';
+import '../../../common/widgets/widgets.dart';
 import '../cubit/audio_player_cubit.dart';
 import '../models/audio_tag.dart';
 
@@ -76,7 +76,7 @@ class Item extends StatelessWidget {
     return SizedBox(
       height: _itemHeight,
       child: ListTile(
-        leading: ListArtwork(id: audio.id),
+        leading: ArtWork(id: audio.id, quality: 200, dimention: 56),
         title: Text(
           audio.title,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
@@ -98,7 +98,7 @@ class Item extends StatelessWidget {
               children: [
                 currentSequenceIndex == index
                     ? Icon(Icons.play_arrow_rounded)
-                    : Icon(Icons.remove, color: Colors.grey.shade300),
+                    : SizedBox(width: 24),
                 Icon(Icons.menu, color: Colors.grey.shade400),
               ],
             );
