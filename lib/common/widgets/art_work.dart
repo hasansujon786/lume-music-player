@@ -6,12 +6,16 @@ class ArtWork extends StatelessWidget {
   final double iconSize;
   final int? quality;
   final int? id;
+  final bool centerIcon;
+  final ArtworkType type;
   const ArtWork({
     super.key,
     this.dimention = 60,
     this.id,
     this.quality,
     this.iconSize = 32,
+    this.centerIcon = false,
+    this.type = ArtworkType.AUDIO
   });
 
   @override
@@ -29,17 +33,20 @@ class ArtWork extends StatelessWidget {
               nullArtworkWidget: buildEmptyArtwork(),
               artworkClipBehavior: Clip.none,
               id: id!,
-              type: ArtworkType.AUDIO,
+              type: type,
             ),
     );
   }
 
   Widget buildEmptyArtwork() {
+    final icon = Icon(Icons.headphones_outlined, size: iconSize, color: Colors.grey.shade50);
     return Container(
       color: Colors.grey.shade300,
-      child: Center(
-        child: Icon(Icons.headphones_outlined, size: iconSize, color: Colors.grey.shade50),
-      ),
+      child: centerIcon
+          ? icon
+          : Stack(
+              children: [Positioned(left: iconSize * -0.20, bottom: iconSize * -0.14, child: icon)],
+            ),
     );
   }
 }

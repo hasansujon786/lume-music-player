@@ -58,13 +58,12 @@ class _ArtistListPageState extends State<ArtistListPage> {
       itemBuilder: (context, index) {
         final item = items[index];
         return ListTile(
-          leading: IconButton.outlined(
-            icon: Icon(FluentIcons.play_20_filled),
+          leading: IconButton(
+            icon: Icon(FluentIcons.play_16_filled),
+            style: Styles.outlinedButton(context),
             onPressed: () => _playArtistSongs(context, item.id),
-            style: IconButton.styleFrom(side: const BorderSide(width: Styles.iconBorderSize)),
           ),
-          // leading: IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
-          title: Text(item.artist, style: Theme.of(context).textTheme.headlineSmall),
+          title: Text(item.artist, style: Theme.of(context).textTheme.titleLarge),
           // subtitle: Text('Albums: ${item.numberOfAlbums}, Tracks: ${item.numberOfTracks}'),
           onTap: () async {
             context.read<SongsByArtistCubit>().loadSongs(item.id);

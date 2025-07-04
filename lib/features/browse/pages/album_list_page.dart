@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_audio_query_forked/on_audio_query.dart';
 
 import '../../../common/routes/routes.dart';
+import '../../player/cubit/audio_player_cubit.dart';
 import '../cubit/media_cubit.dart';
 import '../cubit/songs_by_album_cubit.dart';
-import '../widgets/audio_list_item.dart';
+import '../widgets/album_list_item.dart';
 
 class AlbumListPage extends StatefulWidget {
   const AlbumListPage({super.key});
@@ -44,16 +45,29 @@ class _AlbumListPageState extends State<AlbumListPage> {
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
-        return AudioListItem(
+        return AlbumListItem(
           artworkId: item.id,
           title: item.album,
-          subtitle: 'Artist: ${item.artist}, Tracks: ${item.numOfSongs}',
+          subtitle: item.artist,
+          // subtitle: 'Artist: ${item.artist}, Tracks: ${item.numOfSongs}',
           onTap: () async {
             context.read<SongsByAlbumCubit>().loadSongs(item.id);
             Navigator.of(context).pushNamed(
               Routes.songsByAlbum,
               arguments: SongsByAlbumScreenParams(albumName: item.album),
             );
+          },
+          onPlayTap: () {
+            final setAudioFromFile = context.read<AudioPlayerCubit>().setAudioFromFile;
+            final pushNamed = Navigator.of(context).pushNamed;
+
+            context.read<SongsByAlbumCubit>().loadSongs(item.id).then((songs) {
+              if (songs.isEmpty) return;
+              if (!mounted) return;
+
+              setAudioFromFile(songs, shouldPlay: true, index: 0);
+              pushNamed(Routes.landing);
+            });
           },
         );
       },

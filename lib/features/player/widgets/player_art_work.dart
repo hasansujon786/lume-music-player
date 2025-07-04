@@ -16,7 +16,12 @@ class PlayerArtWork extends StatelessWidget {
       child: BlocSelector<AudioPlayerCubit, AudioPlayerState, AudioTag?>(
         selector: (state) => state.currentAudioTag,
         builder: (context, currentAudioTag) {
-          return ArtWork(dimention: width, id: currentAudioTag?.id, iconSize: 72);
+          return ArtWork(
+            dimention: width,
+            id: currentAudioTag?.id,
+            iconSize: 90,
+            centerIcon: true,
+          );
         },
       ),
     );
